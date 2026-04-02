@@ -1,6 +1,5 @@
 abstract class BankAccount {
 
-    private String owner;
     private double balance = 0.0;
     private String accountNumber;
 
@@ -9,18 +8,17 @@ abstract class BankAccount {
     }
 
     public void deposit(double amount){
-        balance += amount;
+
+        if(amount > 0){
+            balance += amount;
+        }else{
+            System.out.println("The deposit amount needs to be positive.");
+        }
     }
 
     public boolean withdraw(double amount){
-        if(balance < amount) {
-            System.out.println("There is insufficient balance on the account. ");
-            return false;
-        }else  {
-            balance -= amount;
-            return true;
-        }
-
+        balance -= amount;
+        return true;
     }
 
     public double getBalance(){
@@ -31,9 +29,6 @@ abstract class BankAccount {
         return accountNumber;
     }
 
-    public String getOwner(){
-        return owner;
-    }
 
     public abstract String getType();
 }
