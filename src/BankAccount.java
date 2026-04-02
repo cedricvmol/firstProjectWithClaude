@@ -1,21 +1,24 @@
-public class BankAccount {
+abstract class BankAccount {
 
     private String owner;
     private double balance = 0.0;
+    private String accountNumber;
 
-    public BankAccount(String owner){
-        this.owner = owner;
+    public BankAccount(String accountNumber){
+        this.accountNumber = accountNumber;
     }
 
     public void deposit(double amount){
         balance += amount;
     }
 
-    public void withdraw(double amount){
+    public boolean withdraw(double amount){
         if(balance < amount) {
             System.out.println("There is insufficient balance on the account. ");
+            return false;
         }else  {
             balance -= amount;
+            return true;
         }
 
     }
@@ -24,9 +27,14 @@ public class BankAccount {
         return balance;
     }
 
+    public String getAccountNumber(){
+        return accountNumber;
+    }
+
     public String getOwner(){
         return owner;
     }
 
-
+    public abstract String getType();
 }
+
