@@ -1,13 +1,46 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-void main() {
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    IO.println(String.format("Hello and welcome!"));
+import java.util.Scanner;
 
-    for (int i = 1; i <= 5; i++) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        IO.println("i = " + i);
+
+public class BankApp {
+
+    public static void main(String[] args) {
+
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Hi there, What is your name?");
+        String customer = scan.nextLine();
+        System.out.printf("Welcome %s, I've created a new bank account for you!%n",customer);
+
+        BankAccount account1 = new BankAccount(customer);
+
+        boolean flag = true;
+        while(flag){
+            System.out.println();
+            System.out.println("What would you like to do?");
+            System.out.println("1.Deposit");
+            System.out.println("2.Withdraw");
+            System.out.println("3.Check Balance");
+            System.out.println("4.Exit");
+            int choice = scan.nextInt();
+
+            switch (choice){
+                case 1:
+                    System.out.println("What is the amount you would like to deposit?");
+                    account1.deposit(scan.nextDouble());
+                    break;
+                case 2:
+                    System.out.println("What is the amount you would like to withdraw?");
+                    account1.withdraw(scan.nextDouble());
+                    break;
+                case 3:
+
+                    System.out.printf("%nThe amount of money on %s's bankaccount is %.2f%n",account1.getOwner(),account1.getBalance());
+                    break;
+                case 4:
+                    System.out.println("Thanks for using our Bank! see you soon!");
+                    flag = false;
+                    break;
+
+            }
+        }
     }
 }
