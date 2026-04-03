@@ -11,7 +11,7 @@ Relearn Java by building a BankApp from simple to complex, level by level. Each 
 - **What:** Single BankAccount, simple menu (deposit, withdraw, balance, exit)
 - **Concepts:** Classes, fields, methods, constructors, Scanner, loops, switch
 
-### Level 2 — Inheritance & Customers [IN PROGRESS]
+### Level 2 — Inheritance & Customers [DONE]
 - **What:** Abstract BankAccount, SavingsAccount, CheckingAccount (overdraft), Customer class
 - **Concepts:** Abstract classes, inheritance, method overriding, polymorphism, ArrayList
 

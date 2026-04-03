@@ -31,5 +31,10 @@ abstract class BankAccount {
 
 
     public abstract String getType();
+
+    @Override
+    public String toString(){
+        return getType() + " - " + getAccountNumber();
+    }
 }
 
