@@ -34,4 +34,9 @@ public class Customer {
     public String getCustomerId(){
         return customerId;
     }
+
+    @Override
+    public String toString(){
+        return getName();
+    }
 }

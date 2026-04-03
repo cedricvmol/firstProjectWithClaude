@@ -1,4 +1,4 @@
-, a# Java Learning Roadmap — BankApp
+# Java Learning Roadmap — BankApp
 
 ## Goal
 Relearn Java by building a BankApp from simple to complex, level by level. Each level introduces new concepts.
@@ -19,15 +19,19 @@ Relearn Java by building a BankApp from simple to complex, level by level. Each 
 - **What:** Support multiple customers, input validation, handle bad input gracefully
 - **Concepts:** HashMap, try-catch, exceptions, input validation
 
-### Level 4 — Interfaces & Transactions
+### Level 4 — Unit Testing with JUnit
+- **What:** Write tests for all domain classes (BankAccount, SavingAccount, CheckingAccount, Customer)
+- **Concepts:** JUnit 5, assertions, @Test annotation, test structure (Arrange-Act-Assert), Maven/Gradle for dependencies
+
+### Level 5 — Interfaces & Transactions
 - **What:** Transaction history, transferring between accounts, printable statements
 - **Concepts:** Interfaces, enums, date/time API, formatting output
 
-### Level 5 — File Storage
+### Level 6 — File Storage
 - **What:** Save and load customers/accounts to file so data persists between runs
 - **Concepts:** File I/O, serialization, reading/writing text or JSON
 
-### Level 6 — Refactor & Polish
+### Level 7 — Refactor & Polish
 - **What:** Clean up code, separate concerns, add a proper service layer
 - **Concepts:** Packages, access modifiers, separation of concerns, design patterns
 

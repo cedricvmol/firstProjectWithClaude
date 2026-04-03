@@ -1,10 +1,9 @@
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.UUID;
+import java.util.*;
 
 public class BankApp {
     private static Scanner scan = new Scanner(System.in);
+    private static HashMap<String,Customer> customers = new HashMap<>();
+    private static Customer selectedCustomer;
 
 
     public static void main(String[] args) {
@@ -20,12 +19,14 @@ public class BankApp {
         while(flag){
             System.out.println();
             System.out.println("1.Create Customer");
-            System.out.println("2.Open account (Savings or Checking");
-            System.out.println("3.Deposit");
-            System.out.println("4.Withdraw");
-            System.out.println("5.Check Balance");
-            System.out.println("6.View accounts");
-            System.out.println("7.Exit");
+            System.out.println("2.Select Customer");
+            System.out.println("3.Open account (Savings or Checking");
+            System.out.println("4.Deposit");
+            System.out.println("5.Withdraw");
+            System.out.println("6.Check Balance");
+            System.out.println("7.View accounts");
+            System.out.println("8.View all customers");
+            System.out.println("9.Exit");
 
             System.out.println("What would you like to do?");
             int choice = scan.nextInt();
@@ -33,16 +34,19 @@ public class BankApp {
 
             switch (choice){
                 case 1:
-                    customer = createCustomer();
+                    createCustomer();
                     break;
+
+
                 case 2:
-                    if (isCustomerCreated(customer)) {
-                        openAccount(customer);
-                    }else {
-                        break;
-                    }
+                    selectCustomer();
                     break;
-                case 3:
+
+
+                case 3: //TODO implement open account
+
+
+                case 4:
                     if(isCustomerCreated(customer) && !customer.getAccounts().isEmpty()){
                         System.out.println("On what account you want to deposit?");
                         viewAccounts(customer);
@@ -53,7 +57,9 @@ public class BankApp {
                         break;
                     }
                     break;
-                case 4:
+
+
+                case 5:
                     if(isCustomerCreated(customer) && !customer.getAccounts().isEmpty()) {
                         System.out.println("On what account you want to withdraw?");
                         viewAccounts(customer);
@@ -64,7 +70,9 @@ public class BankApp {
                         break;
                     }
                     break;
-                case 5:
+
+
+                case 6:
                     if(isCustomerCreated(customer) && !customer.getAccounts().isEmpty()){
                         System.out.println("On what account you want to see the balance?");
                         viewAccounts(customer);
@@ -75,14 +83,22 @@ public class BankApp {
                         break;
                     }
                     break;
-                case 6:
+
+                case 7:
                     if(isCustomerCreated(customer)&& !customer.getAccounts().isEmpty()){
                         viewAccounts(customer);
                     }else{
                         break;
                     }
                     break;
-                case 7:
+
+
+                case 8 :
+                    viewAllCustomers();
+                    break;
+
+
+                case 9:
                     flag = false;
                     break;
             }
@@ -137,17 +153,48 @@ public class BankApp {
         System.out.printf("The balance for %s , is €%.2f%n",customer.getAccounts().get(accountChoice-1),customer.getAccounts().get(accountChoice-1).getBalance());
     }
 
-    public static Customer createCustomer(){
+    public static void createCustomer(){
+        String customerID = createRandomId();
+
         System.out.println("Customer name: ");
-        Customer customer = new Customer(scan.nextLine(),createRandomId());
+        String customerName = scan.nextLine();
+
+
+        Customer customer = new Customer(customerName,customerID);
         System.out.printf("New customer %s added to the system!%nWith ID:%s.%n%n",customer.getName(),customer.getCustomerId());
-        return customer;
+        customers.put(customerID,customer);
+    }
+
+    public static void selectCustomer(){
+        viewAllCustomers();
+        System.out.println("Which customer u want to select?");
+        String customerToSelect = scan.nextLine();
+        customerToSelect.toLowerCase();
+
+        for(String key : customers.keySet()){
+            if(customers.get(key).getName().toLowerCase().equals(customerToSelect)){
+                selectedCustomer = customers.get(key);
+            }
+        }
+        System.out.println("U have selected " + selectedCustomer.getName() + ".");
 
     }
 
+    public static void viewAllCustomers(){
+        System.out.println("Customers in our system:");
+        for(String key : customers.keySet()){
+            System.out.println("ID:"+key + "  --------  Name: " + customers.get(key).toString());
+        }
+    }
+
     public static String createRandomId(){
-        UUID uuid = UUID.randomUUID();
-        return uuid.toString();
+        Random random = new Random();
+        String id = "";
+        for(int i=0;i<5;i++){
+            int n = random.nextInt(10) + 0;
+            id += Integer.toString(n);
+        }
+        return id;
     }
 
     public static String createRandomAccountNumber(){
