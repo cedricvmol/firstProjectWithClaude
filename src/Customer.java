@@ -3,9 +3,9 @@ import java.util.List;
 
 public class Customer {
 
-    private String name;
-    private String customerId;
-    private List<BankAccount> accounts;
+    private final String name;
+    private final String customerId;
+    private final List<BankAccount> accounts;
 
 
     public Customer(String name, String id){

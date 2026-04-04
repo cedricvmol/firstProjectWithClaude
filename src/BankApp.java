@@ -1,8 +1,8 @@
 import java.util.*;
 
 public class BankApp {
-    private static Scanner scan = new Scanner(System.in);
-    private static HashMap<String,Customer> customers = new HashMap<>();
+    private static final Scanner scan = new Scanner(System.in);
+    private static final HashMap<String,Customer> customers = new HashMap<>();
     private static Customer selectedCustomer;
 
 
@@ -13,14 +13,13 @@ public class BankApp {
 
     public static void mainMenu(){
 
-        Customer customer = null;
 
         boolean flag = true;
         while(flag){
             System.out.println();
             System.out.println("1.Create Customer");
             System.out.println("2.Select Customer");
-            System.out.println("3.Open account (Savings or Checking");
+            System.out.println("3.Open account (Savings or Checking)");
             System.out.println("4.Deposit");
             System.out.println("5.Withdraw");
             System.out.println("6.Check Balance");
@@ -37,59 +36,30 @@ public class BankApp {
                     createCustomer();
                     break;
 
-
                 case 2:
                     selectCustomer();
                     break;
 
-
-                case 3: //TODO implement open account
-
+                case 3:
+                    openAccount();
+                    break;
 
                 case 4:
-                    if(isCustomerCreated(customer) && !customer.getAccounts().isEmpty()){
-                        System.out.println("On what account you want to deposit?");
-                        viewAccounts(customer);
-                        int accountChoicetoDeposit = scan.nextInt();
-                        deposit(customer,accountChoicetoDeposit);
-                    }else {
-                        System.out.println("You have no account set-up, go to menu and select 'open account'");
-                        break;
-                    }
+                    deposit();
                     break;
 
 
                 case 5:
-                    if(isCustomerCreated(customer) && !customer.getAccounts().isEmpty()) {
-                        System.out.println("On what account you want to withdraw?");
-                        viewAccounts(customer);
-                        int accountChoiceToWithdraw = scan.nextInt();
-                        withdraw(customer, accountChoiceToWithdraw);
-                    }else {
-                        System.out.println("You have no account set-up, go to menu and select 'open account'");
-                        break;
-                    }
+                    withdraw();
                     break;
 
 
                 case 6:
-                    if(isCustomerCreated(customer) && !customer.getAccounts().isEmpty()){
-                        System.out.println("On what account you want to see the balance?");
-                        viewAccounts(customer);
-                        int viewBalanceChoise = scan.nextInt();
-                        viewBalance(customer,viewBalanceChoise);
-                    }else {
-                        System.out.println("You have no account set-up, go to menu and select 'open account'");
-                        break;
-                    }
+                    viewBalance();
                     break;
 
                 case 7:
-                    if(isCustomerCreated(customer)&& !customer.getAccounts().isEmpty()){
-                        viewAccounts(customer);
-                    }else{
-                        break;
-                    }
+                    viewAccounts();
                     break;
 
 
@@ -105,71 +75,150 @@ public class BankApp {
         }
     }
 
-    public static void openAccount(Customer customer){
+    public static void openAccount(){
+        if(selectedCustomer == null){
+            System.out.println("You need to create a customer first.");
+            return;
+        }
+
+        System.out.printf("You have selected %s%n",selectedCustomer.getName());
+        System.out.printf("You already have the next accounts: %n");
+        viewAccounts();
+        System.out.println();
         System.out.printf("What type of account do you want to open?%n" +
                 "1.Saving%n" +
                 "2.Checking%n" +
                 "3.Go back to menu%n");
         int choiceOfAccount = scan.nextInt();
+
         if(choiceOfAccount == 1){
             SavingAccount savingAccount = new SavingAccount(createRandomAccountNumber());
-            customer.addAccount(savingAccount);
+            selectedCustomer.addAccount(savingAccount);
+            System.out.printf("You have successfully created the next account: %n%s.%n",savingAccount.toString());
         }
         if(choiceOfAccount==2){
             CheckingAccount checkingAccount = new CheckingAccount(createRandomAccountNumber());
-            customer.addAccount(checkingAccount);
+            selectedCustomer.addAccount(checkingAccount);
+            System.out.printf("You have successfully created the next account: %n%s.%n",checkingAccount.toString());
         }
         if(choiceOfAccount==3){
             return;
         }
     }
 
-    public static void viewAccounts(Customer customer){
-        List<BankAccount> accounts = customer.getAccounts();
+    public static void viewAccounts(){
+
+        if(selectedCustomer == null){
+            System.out.println("You need to create a customer first.");
+            return;
+        }
+
+        if(selectedCustomer.getAccounts().isEmpty()){
+            System.out.println("There are no accounts created for customer: " + selectedCustomer.getName());
+            return;
+        }
+
+        List<BankAccount> accounts = selectedCustomer.getAccounts();
         for(int i=0;i<accounts.size();i++){
             System.out.printf("%d.%s%n",i+1,accounts.get(i).toString());
         }
     }
 
-    public static void deposit(Customer customer,int accountChoice){
-        System.out.println("What is the amount you want to deposit?");
-        double amount = scan.nextDouble();
-        customer.getAccounts().get(accountChoice-1).deposit(amount);
-        System.out.printf("You have successfully deposited €%.2f%n",amount);
-        System.out.printf("The new amount on %s, is now €%.2f%n",customer.getAccounts().get(accountChoice-1),customer.getAccounts().get(accountChoice-1).getBalance());
-    }
-
-    public static void withdraw(Customer customer, int accountChoice){
-        System.out.println("What is the amount you want to withdraw?");
-        double amountToWithdraw = scan.nextDouble();
-
-        if(customer.getAccounts().get(accountChoice-1).withdraw(amountToWithdraw)){
-            System.out.printf("You have successfully Withdraw €%.2f%n",amountToWithdraw);
-            System.out.printf("The new amount on %s, is now €%.2f%n",customer.getAccounts().get(accountChoice-1),customer.getAccounts().get(accountChoice-1).getBalance());
+    public static void deposit(){
+        if(selectedCustomer == null){
+            System.out.println("You need to create a customer first.");
+            return;
         }
+        if(selectedCustomer.getAccounts().isEmpty()){
+            System.out.println("There are no accounts created for customer: " + selectedCustomer.getName());
+            return;
+        }
+        viewAccounts();
+
+        try{
+            System.out.println("On what account do you want to deposit?");
+            int accountChoice = scan.nextInt();
+
+
+            System.out.println("What is the amount you want to deposit?");
+            double amount = scan.nextDouble();
+
+            selectedCustomer.getAccounts().get(accountChoice-1).deposit(amount);
+            System.out.printf("You have successfully deposited %.2f on %s%n", amount,selectedCustomer.getAccounts().get(accountChoice-1).toString());
+
+        }catch (InputMismatchException e){
+            System.out.println("Please enter a valid number!");
+            scan.nextLine();
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("That account doesn't exist.");
+        }
+
     }
 
-    public static void viewBalance(Customer customer,int accountChoice){
-        System.out.printf("The balance for %s , is €%.2f%n",customer.getAccounts().get(accountChoice-1),customer.getAccounts().get(accountChoice-1).getBalance());
+    public static void withdraw(){
+        if(selectedCustomer == null){
+            System.out.println("You need to create a customer first.");
+            return;
+        }
+        if(selectedCustomer.getAccounts().isEmpty()){
+            System.out.println("There are no accounts created for customer: " + selectedCustomer.getName());
+            return;
+        }
+        viewAccounts();
+        System.out.println("On what account do you want to withdraw?");
+        int accountChoiceToWithdraw = scan.nextInt();
+
+        System.out.println("What is the amount you want to withdraw?");
+        double amount = scan.nextDouble();
+
+        if(selectedCustomer.getAccounts().get(accountChoiceToWithdraw -1).withdraw(amount)){
+            System.out.printf("You have successfully withdrawn %.2f on %s%n", amount,selectedCustomer.getAccounts().get(accountChoiceToWithdraw -1).toString());
+        }else {
+            System.out.println("Insufficient funds.");
+        }
+
+
+    }
+
+    public static void viewBalance(){
+        if(selectedCustomer == null){
+            System.out.println("You need to create a customer first.");
+            return;
+        }
+        if(selectedCustomer.getAccounts().isEmpty()){
+            System.out.println("There are no accounts created for customer: " + selectedCustomer.getName());
+            return;
+        }
+        System.out.println("For what account do you want see the balance?");
+        viewAccounts();
+        int account = scan.nextInt();
+        System.out.printf("The balance for %s , is €%.2f%n",selectedCustomer.getAccounts().get(account-1),selectedCustomer.getAccounts().get(account-1).getBalance());
     }
 
     public static void createCustomer(){
         String customerID = createRandomId();
 
-        System.out.println("Customer name: ");
+        System.out.println("New Customer name: ");
         String customerName = scan.nextLine();
-
 
         Customer customer = new Customer(customerName,customerID);
         System.out.printf("New customer %s added to the system!%nWith ID:%s.%n%n",customer.getName(),customer.getCustomerId());
         customers.put(customerID,customer);
+
+        if(customers.size() == 1){
+            selectedCustomer = customer;
+        }
     }
 
     public static void selectCustomer(){
+        if(selectedCustomer == null){
+            System.out.println("You need to create a customer first.");
+            return;
+        }
+
         viewAllCustomers();
         System.out.println("Which customer u want to select?");
         String customerToSelect = scan.nextLine();
-        customerToSelect.toLowerCase();
 
         for(String key : customers.keySet()){
             if(customers.get(key).getName().toLowerCase().equals(customerToSelect)){
@@ -181,6 +230,11 @@ public class BankApp {
     }
 
     public static void viewAllCustomers(){
+        if(selectedCustomer == null){
+            System.out.println("You need to create a customer first.");
+            return;
+        }
+
         System.out.println("Customers in our system:");
         for(String key : customers.keySet()){
             System.out.println("ID:"+key + "  --------  Name: " + customers.get(key).toString());
@@ -189,31 +243,22 @@ public class BankApp {
 
     public static String createRandomId(){
         Random random = new Random();
-        String id = "";
+        StringBuilder id = new StringBuilder();
         for(int i=0;i<5;i++){
-            int n = random.nextInt(10) + 0;
-            id += Integer.toString(n);
+            int n = random.nextInt(10);
+            id.append(n);
         }
-        return id;
+        return id.toString();
     }
 
     public static String createRandomAccountNumber(){
         Random random = new Random();
-        String card = "BE";
+        StringBuilder card = new StringBuilder("BE");
         for(int i=0;i<14;i++){
-            int n = random.nextInt(10)+ 0;
-            card += Integer.toString(n);
+            int n = random.nextInt(10);
+            card.append(n);
         }
-        return card;
-    }
-
-    public static boolean isCustomerCreated(Customer customer){
-        if(customer == null){
-            System.out.println("Please create a customer first.");
-            return false;
-        }else{
-            return true;
-        }
+        return card.toString();
     }
 
 }
