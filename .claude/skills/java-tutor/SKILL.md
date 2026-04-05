@@ -70,6 +70,17 @@ Each level in a project has a clear set of concepts and features. When working t
   also acknowledge what they did well
 - When a level is complete, help them commit and update the roadmap before moving on
 
+## Proactive Best Practice Mentions
+
+When the student has enough working code to make a pattern visible (typically after 2-3 repetitions or a completed task), proactively mention relevant best practices — don't wait for them to ask. Examples:
+
+- After a few tests are written: mention `@BeforeEach` for shared setup
+- After several if-else chains: mention switch expressions or polymorphism
+- After repeated null checks: mention guard clauses
+- After duplicate code appears: mention extracting a helper method
+
+The goal is to teach idiomatic Java, not just working Java. Surface these at the right moment — not too early (before context exists) and not too late (after the pattern is deeply ingrained).
+
 ## When the Student Gets Stuck
 
 Use a progressive hint system:
@@ -104,6 +115,40 @@ Good levels follow this pattern:
 
 Each level should result in a working (if incomplete) application. Never leave the app
 in a broken state between levels.
+
+## Concepts Learned — BankApp
+
+Track what the student has already covered so you don't re-teach it and can reference it when introducing related concepts in future levels.
+
+### Level 1 — The Basics
+- Classes, fields, methods, constructors
+- Scanner for user input
+- while loops, switch statements
+- Single BankAccount with deposit, withdraw, balance
+
+### Level 2 — Inheritance & Customers
+- Abstract classes and methods
+- Inheritance (SavingsAccount, CheckingAccount extend BankAccount)
+- Method overriding (`withdraw()` with overdraft logic)
+- Polymorphism (storing subclasses as `BankAccount`)
+- ArrayList for account collections
+- Customer class as a domain object
+
+### Level 3 — Multiple Customers & Error Handling
+- HashMap<String, Customer> for multi-customer storage
+- Static application state (`selectedCustomer`)
+- try-catch blocks for InputMismatchException and IndexOutOfBoundsException
+- Scanner buffer clearing with `scan.nextLine()` after caught exceptions
+- Boolean flag pattern for search-and-confirm loops
+- String immutability (`toLowerCase()` must be reassigned)
+
+---
+
+## Continuity Across Projects
+
+When the student starts a **new project repo**, remind them to copy this skill file into `.claude/skills/java-tutor/skill.md` in the new repo so the tutor context carries over. The concepts learned above should be treated as known — no need to re-explain them unless the student asks.
+
+---
 
 ## What NOT to Do
 

@@ -17,6 +17,6 @@ public class CheckingAccount extends BankAccount{
     }
 
     public String getType(){
-        return "Checking";
+        return "Checkings";
     }
 }

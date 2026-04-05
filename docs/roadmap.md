@@ -15,7 +15,7 @@ Relearn Java by building a BankApp from simple to complex, level by level. Each 
 - **What:** Abstract BankAccount, SavingsAccount, CheckingAccount (overdraft), Customer class
 - **Concepts:** Abstract classes, inheritance, method overriding, polymorphism, ArrayList
 
-### Level 3 — Multiple Customers & Error Handling
+### Level 3 — Multiple Customers & Error Handling [DONE]
 - **What:** Support multiple customers, input validation, handle bad input gracefully
 - **Concepts:** HashMap, try-catch, exceptions, input validation
 
