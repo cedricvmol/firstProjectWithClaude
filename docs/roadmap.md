@@ -19,7 +19,7 @@ Relearn Java by building a BankApp from simple to complex, level by level. Each 
 - **What:** Support multiple customers, input validation, handle bad input gracefully
 - **Concepts:** HashMap, try-catch, exceptions, input validation
 
-### Level 4 — Unit Testing with JUnit
+### Level 4 — Unit Testing with JUnit [DONE]
 - **What:** Write tests for all domain classes (BankAccount, SavingAccount, CheckingAccount, Customer)
 - **Concepts:** JUnit 5, assertions, @Test annotation, test structure (Arrange-Act-Assert), Maven/Gradle for dependencies
 

@@ -134,6 +134,16 @@ Track what the student has already covered so you don't re-teach it and can refe
 - ArrayList for account collections
 - Customer class as a domain object
 
+### Level 4 — Unit Testing with JUnit
+- JUnit 5 setup in a plain IntelliJ project (added via Project Structure > Libraries > From Maven)
+- `test/` source root marked as Tests in IntelliJ
+- `@Test`, `@BeforeEach` annotations
+- Assertions: `assertEquals`, `assertTrue`, `assertFalse`
+- Arrange-Act-Assert (AAA) pattern
+- One test class per domain class (`BankAccountTest`, `SavingAccountTest`, `CheckingAccountTest`, `CustomerTest`)
+- Test isolation — each test sets up its own state via `@BeforeEach`
+- Testing via public methods only, not via direct field/list manipulation
+
 ### Level 3 — Multiple Customers & Error Handling
 - HashMap<String, Customer> for multi-customer storage
 - Static application state (`selectedCustomer`)
