@@ -19,7 +19,7 @@ public class Customer {
         if(account != null) {
             accounts.add(account);
         }else {
-            System.out.println("Geef een geldig bank account mee.");
+            System.out.println("Give a valid bank account!");
         }
     }
 
