@@ -1,6 +1,6 @@
-public class SavingAccount extends BankAccount{
+public class SavingAccount extends BankAccount implements Printable{
 
-    public SavingAccount(String accountNumber) {
+    public SavingAccount(String accountNumber){
         super(accountNumber);
     }
 
@@ -16,6 +16,11 @@ public class SavingAccount extends BankAccount{
 
     public String getType(){
         return "Savings";
+    }
+
+    @Override
+    public void printStatement(){
+        System.out.printf("TEST STILL NEED TO IMPLEMENT");
     }
 
 }

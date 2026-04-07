@@ -1,16 +1,22 @@
+import java.util.ArrayList;
+import java.util.List;
+
 abstract class BankAccount {
 
     private double balance = 0.0;
     private String accountNumber;
+    private List<Transaction> transactions;
 
     public BankAccount(String accountNumber){
         this.accountNumber = accountNumber;
+        transactions = new ArrayList<>();
     }
 
     public void deposit(double amount){
 
         if(amount > 0){
             balance += amount;
+            transactions.add(new Transaction(TransactionType.DEPOSIT,amount));
         }else{
             System.out.println("The deposit amount needs to be positive.");
         }
@@ -18,6 +24,7 @@ abstract class BankAccount {
 
     public boolean withdraw(double amount){
         balance -= amount;
+        transactions.add(new Transaction(TransactionType.WITHDRAWAL,amount));
         return true;
     }
 
@@ -27,6 +34,10 @@ abstract class BankAccount {
 
     public String getAccountNumber(){
         return accountNumber;
+    }
+
+    public List<Transaction> getTransactions(){
+        return transactions;
     }
 
 

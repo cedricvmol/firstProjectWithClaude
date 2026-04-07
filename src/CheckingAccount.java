@@ -1,4 +1,4 @@
-public class CheckingAccount extends BankAccount{
+public class CheckingAccount extends BankAccount implements Printable{
 
     private static final double OVERDRAFT_LIMIT = -500.00;
 
@@ -18,5 +18,10 @@ public class CheckingAccount extends BankAccount{
 
     public String getType(){
         return "Checkings";
+    }
+
+    @Override
+    public void printStatement(){
+        System.out.printf("TEST STILL NEED TO IMPLEMENT");
     }
 }

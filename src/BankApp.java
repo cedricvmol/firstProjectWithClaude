@@ -25,7 +25,8 @@ public class BankApp {
             System.out.println("6.Check Balance");
             System.out.println("7.View accounts");
             System.out.println("8.View all customers");
-            System.out.println("9.Exit");
+            System.out.println("9. Transfer between accounts");
+            System.out.println("13.Exit");
 
             try {
                 System.out.println("What would you like to do?");
@@ -58,6 +59,13 @@ public class BankApp {
                         viewAllCustomers();
                         break;
                     case 9:
+                        transfer();
+                        break;
+                    case 10:
+                        break;
+                    case 11:
+                        break;
+                    case 12:
                         flag = false;
                         break;
                 }
@@ -71,13 +79,7 @@ public class BankApp {
     }
 
     public static void openAccount() {
-        if (selectedCustomer == null) {
-            System.out.println("You need to create a customer first.");
-            return;
-        }
-
-        System.out.printf("You have selected %s%n", selectedCustomer.getName());
-        System.out.printf("You already have the next accounts: %n");
+        if (!isUserSelected()) return;
         viewAccounts();
         System.out.println();
         System.out.printf("What type of account do you want to open?%n" +
@@ -108,17 +110,10 @@ public class BankApp {
     }
 
     public static void viewAccounts() {
+        if (!isUserSelected()) return;
+        if (!hasUserAccount()) return;
 
-        if (selectedCustomer == null) {
-            System.out.println("You need to create a customer first.");
-            return;
-        }
-
-        if (selectedCustomer.getAccounts().isEmpty()) {
-            System.out.println("There are no accounts created for customer: " + selectedCustomer.getName());
-            return;
-        }
-
+        System.out.println(selectedCustomer.getName() + " has the following accounts: ");
         List<BankAccount> accounts = selectedCustomer.getAccounts();
         for (int i = 0; i < accounts.size(); i++) {
             System.out.printf("%d.%s%n", i + 1, accounts.get(i).toString());
@@ -126,14 +121,8 @@ public class BankApp {
     }
 
     public static void deposit() {
-        if (selectedCustomer == null) {
-            System.out.println("You need to create a customer first.");
-            return;
-        }
-        if (selectedCustomer.getAccounts().isEmpty()) {
-            System.out.println("There are no accounts created for customer: " + selectedCustomer.getName());
-            return;
-        }
+        if (!isUserSelected()) return;
+        if (!hasUserAccount()) return;
         viewAccounts();
 
         try {
@@ -157,14 +146,8 @@ public class BankApp {
     }
 
     public static void withdraw() {
-        if (selectedCustomer == null) {
-            System.out.println("You need to create a customer first.");
-            return;
-        }
-        if (selectedCustomer.getAccounts().isEmpty()) {
-            System.out.println("There are no accounts created for customer: " + selectedCustomer.getName());
-            return;
-        }
+        if (!isUserSelected()) return;
+        if (!hasUserAccount()) return;
         viewAccounts();
 
         try {
@@ -192,14 +175,9 @@ public class BankApp {
     }
 
     public static void viewBalance() {
-        if (selectedCustomer == null) {
-            System.out.println("You need to create a customer first.");
-            return;
-        }
-        if (selectedCustomer.getAccounts().isEmpty()) {
-            System.out.println("There are no accounts created for customer: " + selectedCustomer.getName());
-            return;
-        }
+        if (!isUserSelected()) return;
+        if (!hasUserAccount()) return;
+
         System.out.println("For what account do you want see the balance?");
         viewAccounts();
         try {
@@ -222,7 +200,7 @@ public class BankApp {
         String customerName = scan.nextLine();
 
         Customer customer = new Customer(customerName, customerID);
-        System.out.printf("New customer %s added to the system!%nWith ID:%s.%n%n", customer.getName(), customer.getCustomerId());
+        System.out.printf("%nNew customer %s with ID:%s added to the system!%n%n", customer.getName(), customer.getCustomerId());
         customers.put(customerID, customer);
 
         if (customers.size() == 1) {
@@ -231,10 +209,7 @@ public class BankApp {
     }
 
     public static void selectCustomer() {
-        if (selectedCustomer == null) {
-            System.out.println("You need to create a customer first.");
-            return;
-        }
+        if (!isUserSelected()) return;
 
         viewAllCustomers();
 
@@ -260,10 +235,7 @@ public class BankApp {
     }
 
     public static void viewAllCustomers() {
-        if (selectedCustomer == null) {
-            System.out.println("You need to create a customer first.");
-            return;
-        }
+        if (!isUserSelected()) return;
 
         System.out.println("Customers in our system:");
         for (String key : customers.keySet()) {
@@ -289,6 +261,32 @@ public class BankApp {
             card.append(n);
         }
         return card.toString();
+    }
+
+    public static void transfer() {
+
+        System.out.printf("User selected: [%s]%n", selectedCustomer.getName());
+        viewAccounts();
+        System.out.println("");
+    }
+
+    public static boolean isUserSelected() {
+        if (selectedCustomer == null) {
+            System.out.println("You need to create and select a customer first.");
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    public static boolean hasUserAccount() {
+        if (selectedCustomer.getAccounts().isEmpty()) {
+            System.out.println("There are no accounts for the following user " + selectedCustomer.getName());
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }
