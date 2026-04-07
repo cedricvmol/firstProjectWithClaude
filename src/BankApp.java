@@ -264,6 +264,15 @@ public class BankApp {
     }
 
     public static void transfer() {
+        //  For when you pick this up next time — here's what transfer() needs to do:
+        //
+        //  1. Check isUserSelected() and hasUserAccount()
+        //  2. The customer needs at least 2 accounts to transfer between — add a check for that
+        //  3. Ask which account to transfer from
+        //  4. Ask which account to transfer to
+        //  5. Ask for the amount
+        //  6. Withdraw from source, deposit to destination
+        //  7. Both accounts should get a TRANSFER transaction (not DEPOSIT/WITHDRAWAL)
 
         System.out.printf("User selected: [%s]%n", selectedCustomer.getName());
         viewAccounts();
