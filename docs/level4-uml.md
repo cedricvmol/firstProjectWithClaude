@@ -4,14 +4,14 @@ No new domain classes in this level. Level 4 adds a test suite alongside the exi
 
 ```
 ┌──────────────────────────┐       tests       ┌──────────────────────────────┐
-│     BankAccount          │◄──────────────────│   BankAccountTest            │
+│     domain.BankAccount          │◄──────────────────│   BankAccountTest            │
 │     (abstract)           │                   ├──────────────────────────────┤
-└──────────┬───────────────┘                   │ - account: SavingAccount     │
+└──────────┬───────────────┘                   │ - account: domain.SavingAccount     │
            │                                   ├──────────────────────────────┤
    ┌───────┴────────┐                          │ + setUp(): void (@BeforeEach)│
    │                │                          │ + testInitialBalanceIsZero() │
 ┌──┴────────────┐  ┌┴─────────────────┐        │ + testDepositIncreasesBalance│
-│ SavingAccount │  │ CheckingAccount  │        │ + testNegativeDepositIgnored │
+│ domain.SavingAccount │  │ domain.CheckingAccount  │        │ + testNegativeDepositIgnored │
 └──────┬────────┘  └────────┬─────────┘        └──────────────────────────────┘
        │                    │
        │ tests              │ tests
@@ -19,8 +19,8 @@ No new domain classes in this level. Level 4 adds a test suite alongside the exi
 ┌──────────────────┐   ┌───────────────────────────┐
 │ SavingAccountTest│   │ CheckingAccountTest        │
 ├──────────────────┤   ├───────────────────────────┤
-│- account:        │   │- account: CheckingAccount  │
-│  SavingAccount   │   ├───────────────────────────┤
+│- account:        │   │- account: domain.CheckingAccount  │
+│  domain.SavingAccount   │   ├───────────────────────────┤
 ├──────────────────┤   │+ setUp() (@BeforeEach)     │
 │+ setUp()         │   │+ testWithdrawWithin        │
 │  (@BeforeEach)   │   │  Overdraft()               │
@@ -32,9 +32,9 @@ No new domain classes in this level. Level 4 adds a test suite alongside the exi
 └──────────────────┘
 
 ┌──────────────────┐       tests       ┌──────────────────────────────┐
-│    Customer      │◄──────────────────│   CustomerTest               │
+│    domain.Customer      │◄──────────────────│   CustomerTest               │
 └──────────────────┘                   ├──────────────────────────────┤
-                                       │ - customer: Customer         │
+                                       │ - customer: domain.Customer         │
                                        ├──────────────────────────────┤
                                        │ + setUp() (@BeforeEach)      │
                                        │ + testAddAccount()           │

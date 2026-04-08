@@ -1,9 +1,9 @@
----
+i'v---
 name: java-tutor
 description: >
   Java learning companion for a practical, project-based learner who builds real applications
   level by level. Trigger this skill whenever the user is working on a Java learning project
-  (like the BankApp or any future project with a leveled roadmap), asks about Java concepts,
+  (like the app.BankApp or any future project with a leveled roadmap), asks about Java concepts,
   wants to start a new learning project, or asks for help implementing features in their
   current level. Also trigger when the user says things like "what should I work on next",
   "explain this concept", "I'm stuck", "let's start a new project", or references levels,
@@ -70,6 +70,7 @@ Each level in a project has a clear set of concepts and features. When working t
 - When they share code or ask for review, give honest feedback — point out issues but
   also acknowledge what they did well
 - When a level is complete, help them commit and update the roadmap before moving on
+- **Always update the "Concepts Learned" section in this skill file** when a level is complete — add a new section for the finished level with the key concepts covered. Do this automatically without waiting for the student to ask.
 
 ## Proactive Best Practice Mentions
 
@@ -117,7 +118,7 @@ Good levels follow this pattern:
 Each level should result in a working (if incomplete) application. Never leave the app
 in a broken state between levels.
 
-## Concepts Learned — BankApp
+## Concepts Learned — app.BankApp
 
 Track what the student has already covered so you don't re-teach it and can reference it when introducing related concepts in future levels.
 
@@ -125,15 +126,15 @@ Track what the student has already covered so you don't re-teach it and can refe
 - Classes, fields, methods, constructors
 - Scanner for user input
 - while loops, switch statements
-- Single BankAccount with deposit, withdraw, balance
+- Single domain.BankAccount with deposit, withdraw, balance
 
 ### Level 2 — Inheritance & Customers
 - Abstract classes and methods
-- Inheritance (SavingsAccount, CheckingAccount extend BankAccount)
+- Inheritance (SavingsAccount, domain.CheckingAccount extend domain.BankAccount)
 - Method overriding (`withdraw()` with overdraft logic)
-- Polymorphism (storing subclasses as `BankAccount`)
+- Polymorphism (storing subclasses as `domain.BankAccount`)
 - ArrayList for account collections
-- Customer class as a domain object
+- domain.Customer class as a domain object
 
 ### Level 4 — Unit Testing with JUnit
 - JUnit 5 setup in a plain IntelliJ project (added via Project Structure > Libraries > From Maven)
@@ -146,7 +147,7 @@ Track what the student has already covered so you don't re-teach it and can refe
 - Testing via public methods only, not via direct field/list manipulation
 
 ### Level 3 — Multiple Customers & Error Handling
-- HashMap<String, Customer> for multi-customer storage
+- HashMap<String, domain.Customer> for multi-customer storage
 - Static application state (`selectedCustomer`)
 - try-catch blocks for InputMismatchException and IndexOutOfBoundsException
 - Scanner buffer clearing with `scan.nextLine()` after caught exceptions
@@ -154,13 +155,25 @@ Track what the student has already covered so you don't re-teach it and can refe
 - String immutability (`toLowerCase()` must be reassigned)
 
 ### Level 5 — Interfaces & Transactions
-- Interfaces (`Printable`) as contracts — declare method signatures, implement in classes
-- Enums (`TransactionType`) for fixed sets of constants (DEPOSIT, WITHDRAWAL, TRANSFER)
+- Interfaces (`domain.Printable`) as contracts — declare method signatures, implement in classes
+- Enums (`domain.TransactionType`) for fixed sets of constants (DEPOSIT, WITHDRAWAL, TRANSFER)
 - `LocalDateTime` and `DateTimeFormatter` for timestamps and formatted output
 - `System.out.printf` with fixed-width columns for tabular output
 - Running balance calculation from transaction history
 - `removeLast()` (Java 21) for list manipulation
 - Calling `withdraw()`/`deposit()` and replacing their auto-logged transactions with TRANSFER type
+
+### Level 6 — File Storage
+- `BufferedWriter` / `FileWriter` for writing text files
+- `BufferedReader` / `FileReader` for reading text files
+- Structured text format with delimiters (`;`) for serializing objects
+- Parsing lines back into objects: `split()`, `Double.parseDouble()`, `domain.TransactionType.valueOf()`
+- `LocalDateTime.parse(string, formatter)` to deserialize timestamps
+- Overloaded constructors — same class, different parameter sets, Java picks the right one
+- `FileNotFoundException` as a specific subtype of `IOException` — catch it separately to treat "no file" as empty state
+- Nested loops to find an account by number across all customers (`customerMap.values()`)
+- Making all file utility methods `static` so they can be called without instantiating the class
+- Guard logic on menu options: `viewAllCustomers()` and `selectCustomer()` should not require a selected customer
 
 ---
 

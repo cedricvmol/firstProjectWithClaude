@@ -1,8 +1,10 @@
+package domain;
+
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-abstract class BankAccount implements Printable {
+public abstract class BankAccount implements Printable {
 
     private double balance = 0.0;
     private String accountNumber;
@@ -14,11 +16,15 @@ abstract class BankAccount implements Printable {
         setBalance(balance);
     }
 
+    public void addTransaction(Transaction t){
+        this.transactions.add(t);
+    }
+
     public void deposit(double amount){
 
         if(amount > 0){
             balance += amount;
-            transactions.add(new Transaction(TransactionType.DEPOSIT,amount));
+            addTransaction(new Transaction(TransactionType.DEPOSIT,amount));
         }else{
             System.out.println("The deposit amount needs to be positive.");
         }
@@ -26,7 +32,7 @@ abstract class BankAccount implements Printable {
 
     public boolean withdraw(double amount){
         balance -= amount;
-        transactions.add(new Transaction(TransactionType.WITHDRAWAL,amount));
+        addTransaction(new Transaction(TransactionType.WITHDRAWAL,amount));
         return true;
     }
 

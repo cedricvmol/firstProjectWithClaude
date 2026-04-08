@@ -1,3 +1,7 @@
+package app;
+
+import domain.*;
+import storage.FileManager;
 import java.io.IOException;
 import java.util.*;
 
@@ -20,8 +24,8 @@ public class BankApp {
         boolean flag = true;
         while (flag) {
             System.out.println();
-            System.out.println("1.Create Customer");
-            System.out.println("2.Select Customer");
+            System.out.println("1.Create customer");
+            System.out.println("2.Select customer");
             System.out.println("3.Open account (Savings or Checking)");
             System.out.println("4.Deposit");
             System.out.println("5.Withdraw");
@@ -205,7 +209,7 @@ public class BankApp {
     public static void createCustomer() {
         String customerID = createRandomId();
 
-        System.out.println("New Customer name: ");
+        System.out.println("New customer name: ");
         String customerName = scan.nextLine();
 
         Customer customer = new Customer(customerName, customerID);

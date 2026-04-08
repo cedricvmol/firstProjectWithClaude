@@ -2,11 +2,11 @@ pr# Level 3 — UML Class Diagram
 
 ```
 ┌──────────────────────────────────────────────┐
-│               BankApp (main)                 │
+│               app.BankApp (main)                 │
 ├──────────────────────────────────────────────┤
 │ - scan: Scanner (static)                     │
-│ - customers: HashMap<String, Customer>       │
-│ - selectedCustomer: Customer                 │
+│ - customers: HashMap<String, domain.Customer>       │
+│ - selectedCustomer: domain.Customer                 │
 ├──────────────────────────────────────────────┤
 │ + main(args: String[]): void                 │
 │ + mainMenu(): void                           │
@@ -21,7 +21,7 @@ pr# Level 3 — UML Class Diagram
 └──────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────┐
-│       BankAccount (abstract)        │
+│       domain.BankAccount (abstract)        │
 ├─────────────────────────────────────┤
 │  (unchanged from level 2)           │
 └──────────────┬──────────────────────┘
@@ -29,20 +29,20 @@ pr# Level 3 — UML Class Diagram
        ┌───────┴────────┐
        │                │
 ┌──────┴───────┐  ┌─────┴───────────┐
-│SavingsAccount│  │CheckingAccount  │
+│SavingsAccount│  │domain.CheckingAccount  │
 ├──────────────┤  ├─────────────────┤
 │ (unchanged)  │  │ (unchanged)     │
 └──────────────┘  └─────────────────┘
 
 ┌──────────────────────────────────────────┐
-│              Customer                    │
+│              domain.Customer                    │
 ├──────────────────────────────────────────┤
 │  (unchanged from level 2)                │
 └──────────────────────────────────────────┘
 ```
 
 ## What's new in Level 3
-- `BankApp` now holds a `HashMap<String, Customer>` — key is customerId, value is Customer
+- `app.BankApp` now holds a `HashMap<String, domain.Customer>` — key is customerId, value is domain.Customer
 - `selectedCustomer` tracks which customer is currently active
 - Methods no longer pass `customer` as a parameter — they use `selectedCustomer`
 - All user input is wrapped in try-catch blocks to handle `InputMismatchException`

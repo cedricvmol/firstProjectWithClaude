@@ -1,3 +1,5 @@
+package domain;
+
 public class CheckingAccount extends BankAccount implements Printable{
 
     private static final double OVERDRAFT_LIMIT = -500.00;

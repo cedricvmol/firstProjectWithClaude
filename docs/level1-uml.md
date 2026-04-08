@@ -2,12 +2,12 @@
 
 ```
 ┌──────────────────────────────┐
-│         BankAccount          │
+│         domain.BankAccount          │
 ├──────────────────────────────┤
 │ - owner: String              │
 │ - balance: double            │
 ├──────────────────────────────┤
-│ + BankAccount(owner: String) │
+│ + domain.BankAccount(owner: String) │
 │ + deposit(amount: double)    │
 │ + withdraw(amount: double)   │
 │ + getBalance(): double       │
@@ -16,13 +16,13 @@
 └──────────────────────────────┘
 
 ┌──────────────────────────────┐
-│        BankApp (main)        │
+│        app.BankApp (main)        │
 ├──────────────────────────────┤
 │ + main(args: String[])       │
 ├──────────────────────────────┤
 │ - Shows a menu               │
 │ - Reads user input           │
-│ - Calls BankAccount methods  │
+│ - Calls domain.BankAccount methods  │
 └──────────────────────────────┘
 ```
 

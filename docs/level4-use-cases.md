@@ -2,7 +2,7 @@
 
 These are the behaviors to verify with JUnit tests. Each row is one `@Test` method.
 
-## BankAccountTest (test via SavingAccount as concrete implementation)
+## BankAccountTest (test via domain.SavingAccount as concrete implementation)
 
 | # | Test method                  | What it verifies                                              |
 |---|------------------------------|---------------------------------------------------------------|

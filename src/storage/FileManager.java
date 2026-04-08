@@ -1,9 +1,11 @@
+package storage;
+
+import domain.*;
+
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class FileManager {
     private static final String FILE_PATH = "data/bank.txt";
@@ -57,7 +59,7 @@ public class FileManager {
                         for(BankAccount account : customer.getAccounts()){
                             if(account.getAccountNumber().equals(inputs[1])){
                                 Transaction t = new Transaction(TransactionType.valueOf(inputs[2]),Double.parseDouble(inputs[3]), LocalDateTime.parse(inputs[4],formatter));
-                                account.getTransactions().add(t);
+                                account.addTransaction(t);
                             }
                         }
                     }

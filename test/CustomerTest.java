@@ -1,3 +1,5 @@
+import domain.CheckingAccount;
+import domain.Customer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

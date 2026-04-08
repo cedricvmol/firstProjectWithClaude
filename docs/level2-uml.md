@@ -2,12 +2,12 @@
 
 ```
 ┌─────────────────────────────────────┐
-│          BankAccount (abstract)     │
+│          domain.BankAccount (abstract)     │
 ├─────────────────────────────────────┤
 │ - accountNumber: String             │
 │ - balance: double                   │
 ├─────────────────────────────────────┤
-│ + BankAccount(accountNumber: String)│
+│ + domain.BankAccount(accountNumber: String)│
 │ + deposit(amount: double): void     │
 │ + withdraw(amount: double): boolean │
 │ + getBalance(): double              │
@@ -18,7 +18,7 @@
        ┌───────┴────────┐
        │                 │
 ┌──────┴───────┐  ┌──────┴──────────┐
-│SavingsAccount│  │CheckingAccount  │
+│SavingsAccount│  │domain.CheckingAccount  │
 ├──────────────┤  ├─────────────────┤
 │              │  │ - OVERDRAFT_    │
 │              │  │   LIMIT: double │
@@ -29,26 +29,26 @@
 └──────────────┘  └─────────────────┘
 
 ┌──────────────────────────────────────────┐
-│              Customer                    │
+│              domain.Customer                    │
 ├──────────────────────────────────────────┤
 │ - name: String                           │
 │ - customerId: String                     │
-│ - accounts: List<BankAccount>            │
+│ - accounts: List<domain.BankAccount>            │
 ├──────────────────────────────────────────┤
-│ + Customer(name: String, id: String)     │
-│ + addAccount(account: BankAccount): void │
-│ + getAccounts(): List<BankAccount>       │
+│ + domain.Customer(name: String, id: String)     │
+│ + addAccount(account: domain.BankAccount): void │
+│ + getAccounts(): List<domain.BankAccount>       │
 │ + getName(): String                      │
 │ + getCustomerId(): String                │
 └──────────────────────────────────────────┘
 ```
 
 ## Notes
-- `BankAccount` is now abstract — cannot be instantiated directly
+- `domain.BankAccount` is now abstract — cannot be instantiated directly
 - `getType()` is abstract — each subclass returns its own type name
 - `withdraw()` is overridden in each subclass with different rules
 - `withdraw()` returns boolean — true if successful, false if denied
 - `SavingsAccount`: no overdraft allowed (balance cannot go below 0)
-- `CheckingAccount`: allows overdraft down to -500.0
+- `domain.CheckingAccount`: allows overdraft down to -500.0
 - `deposit()` should validate that amount is positive
-- `Customer` holds a List<BankAccount> — needs `import java.util.ArrayList`
+- `domain.Customer` holds a List<domain.BankAccount> — needs `import java.util.ArrayList`

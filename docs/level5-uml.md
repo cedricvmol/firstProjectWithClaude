@@ -5,7 +5,7 @@
 ```
 «enumeration»
 ┌─────────────────────┐
-│  TransactionType    │
+│  domain.TransactionType    │
 ├─────────────────────┤
 │  DEPOSIT            │
 │  WITHDRAWAL         │
@@ -13,14 +13,14 @@
 └─────────────────────┘
 
 ┌──────────────────────────────────┐
-│           Transaction            │
+│           domain.Transaction            │
 ├──────────────────────────────────┤
-│ - type: TransactionType          │
+│ - type: domain.TransactionType          │
 │ - amount: double                 │
 │ - dateTime: LocalDateTime        │
 ├──────────────────────────────────┤
-│ + Transaction(type, amount)      │
-│ + getType(): TransactionType     │
+│ + domain.Transaction(type, amount)      │
+│ + getType(): domain.TransactionType     │
 │ + getAmount(): double            │
 │ + getDateTime(): LocalDateTime   │
 │ + toString(): String             │
@@ -28,7 +28,7 @@
 
 «interface»
 ┌──────────────────────────────────┐
-│          Printable               │
+│          domain.Printable               │
 ├──────────────────────────────────┤
 │ + printStatement(): void         │
 └──────────────────────────────────┘
@@ -38,16 +38,16 @@
 
 ```
 ┌──────────────────────────────────────────┐
-│           BankAccount (abstract)         │
+│           domain.BankAccount (abstract)         │
 ├──────────────────────────────────────────┤
 │ - balance: double                        │
 │ - accountNumber: String                  │
-│ - transactions: List<Transaction>        │   ← new
+│ - transactions: List<domain.Transaction>        │   ← new
 ├──────────────────────────────────────────┤
-│ + deposit(amount): void                  │   ← records Transaction
-│ + withdraw(amount): boolean              │   ← records Transaction
-│ + getTransactions(): List<Transaction>   │   ← new
-│ + printStatement(): void                 │   ← implements Printable
+│ + deposit(amount): void                  │   ← records domain.Transaction
+│ + withdraw(amount): boolean              │   ← records domain.Transaction
+│ + getTransactions(): List<domain.Transaction>   │   ← new
+│ + printStatement(): void                 │   ← implements domain.Printable
 │ + getBalance(): double                   │
 │ + getAccountNumber(): String             │
 │ + getType(): String                      │
@@ -55,10 +55,10 @@
          implements ▲
                     │
               «interface»
-              Printable
+              domain.Printable
 
 ┌──────────────────────────────────────────┐
-│              BankApp                     │
+│              app.BankApp                     │
 ├──────────────────────────────────────────┤
 │ (existing fields unchanged)              │
 ├──────────────────────────────────────────┤
@@ -70,7 +70,7 @@
 ```
 
 ## Key Concepts
-- **Interface**: defines a contract (`Printable`) — any class that implements it must provide `printStatement()`
-- **Enum**: `TransactionType` — a fixed set of named constants, safer than using plain strings
+- **Interface**: defines a contract (`domain.Printable`) — any class that implements it must provide `printStatement()`
+- **Enum**: `domain.TransactionType` — a fixed set of named constants, safer than using plain strings
 - **LocalDateTime**: from `java.time` — captures date and time of each transaction
 - **DateTimeFormatter**: formats `LocalDateTime` into a readable string for output
