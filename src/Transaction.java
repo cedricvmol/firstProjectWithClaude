@@ -14,6 +14,12 @@ public class Transaction {
         localDateTime = LocalDateTime.now();
     }
 
+    public Transaction(TransactionType type, double amount, LocalDateTime dateTime) {
+        this.type = type;
+        this.amount = amount;
+        this.localDateTime = dateTime;
+    }
+
     public TransactionType getType(){
         return type;
     }

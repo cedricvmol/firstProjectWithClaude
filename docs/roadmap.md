@@ -37,6 +37,7 @@ Relearn Java by building a BankApp from simple to complex, level by level. Each 
 - **Known issues to address:**
   - Running balance calculation lives inside `printStatement()` — should be extracted as separate logic
   - TRANSFER transactions don't distinguish between source (money out) and destination (money in) — both accounts get the same Transaction object
+  - `FileManager.loadData()` calls `account.getTransactions().add(t)` directly — should use an `addTransaction()` method on `BankAccount` for proper encapsulation
 
 ### Level 8 — Database Storage
 - **What:** Replace file storage with a database, store and retrieve customers, accounts, and transactions

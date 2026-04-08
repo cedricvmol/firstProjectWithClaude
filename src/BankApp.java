@@ -1,14 +1,17 @@
+import java.io.IOException;
 import java.util.*;
 
 public class BankApp {
     private static final Scanner scan = new Scanner(System.in);
-    private static final HashMap<String, Customer> customers = new HashMap<>();
+    private static HashMap<String,Customer> customers;
     private static Customer selectedCustomer;
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        customers = FileManager.loadData();
         System.out.println("Welcome in my bank app!");
         mainMenu();
+
     }
 
     public static void mainMenu() {
@@ -70,6 +73,7 @@ public class BankApp {
                         printStatement();
                         break;
                     case 12:
+                        FileManager.saveData(customers);
                         flag = false;
                         break;
                 }
@@ -77,6 +81,8 @@ public class BankApp {
             } catch (InputMismatchException e) {
                 System.out.println("Please select a valid menu option!");
                 scan.nextLine();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
 
         }
@@ -212,11 +218,9 @@ public class BankApp {
     }
 
     public static void selectCustomer() {
-        if (!isUserSelected()) return;
-
         viewAllCustomers();
 
-        System.out.println("Which customer u want to select?");
+        System.out.println("Type a customer name.");
         String customerToSelect = scan.nextLine();
         customerToSelect = customerToSelect.toLowerCase();
         boolean customerFound = false;
@@ -238,7 +242,6 @@ public class BankApp {
     }
 
     public static void viewAllCustomers() {
-        if (!isUserSelected()) return;
 
         System.out.println("Customers in our system:");
         for (String key : customers.keySet()) {
