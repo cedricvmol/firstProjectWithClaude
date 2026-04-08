@@ -34,6 +34,13 @@ Relearn Java by building a BankApp from simple to complex, level by level. Each 
 ### Level 7 — Refactor & Polish
 - **What:** Clean up code, separate concerns, add a proper service layer
 - **Concepts:** Packages, access modifiers, separation of concerns, design patterns
+- **Known issues to address:**
+  - Running balance calculation lives inside `printStatement()` — should be extracted as separate logic
+  - TRANSFER transactions don't distinguish between source (money out) and destination (money in) — both accounts get the same Transaction object
+
+### Level 8 — Database Storage
+- **What:** Replace file storage with a database, store and retrieve customers, accounts, and transactions
+- **Concepts:** JDBC, SQL basics (CREATE, INSERT, SELECT, UPDATE), SQLite or MySQL, connection management
 
 ---
 

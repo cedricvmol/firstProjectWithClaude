@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Transaction {
 
@@ -26,6 +27,7 @@ public class Transaction {
     }
 
     public String toString(){
-        return "Transaction: " + getType() + " - " + getAmount() + " - " + getDateTime();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return  getType() + " - " + getAmount() + " - " + localDateTime.format(formatter);
     }
 }

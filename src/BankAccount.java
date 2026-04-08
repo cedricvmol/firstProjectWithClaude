@@ -1,7 +1,8 @@
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-abstract class BankAccount {
+abstract class BankAccount implements Printable {
 
     private double balance = 0.0;
     private String accountNumber;
@@ -46,6 +47,25 @@ abstract class BankAccount {
     @Override
     public String toString(){
         return getType() + " - " + getAccountNumber();
+    }
+
+    @Override
+    public void printStatement(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        System.out.printf("%-20s %-16s %10s %10s %n", "Date", "Type", "Amount", "Balance");
+        double runningBalance = 0;
+        for(Transaction transaction : transactions){
+            if(transaction.getType() == TransactionType.DEPOSIT){
+                runningBalance += transaction.getAmount();
+            } else {
+                runningBalance -= transaction.getAmount();
+            }
+            System.out.printf("%-20s %-16s %10.2f %10.2f %n",
+                    transaction.getDateTime().format(formatter),
+                    transaction.getType(),
+                    transaction.getAmount(),
+                    runningBalance);
+        }
     }
 }
 

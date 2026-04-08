@@ -25,8 +25,10 @@ public class BankApp {
             System.out.println("6.Check Balance");
             System.out.println("7.View accounts");
             System.out.println("8.View all customers");
-            System.out.println("9. Transfer between accounts");
-            System.out.println("13.Exit");
+            System.out.println("9.Transfer between accounts");
+            System.out.println("10.View transaction history");
+            System.out.println("11.View print statement for account");
+            System.out.println("12.Exit");
 
             try {
                 System.out.println("What would you like to do?");
@@ -62,8 +64,10 @@ public class BankApp {
                         transfer();
                         break;
                     case 10:
+                        viewTransactions();
                         break;
                     case 11:
+                        printStatement();
                         break;
                     case 12:
                         flag = false;
@@ -128,7 +132,6 @@ public class BankApp {
         try {
             System.out.println("On what account do you want to deposit?");
             int accountChoice = scan.nextInt();
-
 
             System.out.println("What is the amount you want to deposit?");
             double amount = scan.nextDouble();
@@ -264,19 +267,85 @@ public class BankApp {
     }
 
     public static void transfer() {
-        //  For when you pick this up next time — here's what transfer() needs to do:
-        //
         //  1. Check isUserSelected() and hasUserAccount()
+        if (!isUserSelected()) return;
+        if (!hasUserAccount()) return;
         //  2. The customer needs at least 2 accounts to transfer between — add a check for that
-        //  3. Ask which account to transfer from
-        //  4. Ask which account to transfer to
-        //  5. Ask for the amount
-        //  6. Withdraw from source, deposit to destination
-        //  7. Both accounts should get a TRANSFER transaction (not DEPOSIT/WITHDRAWAL)
+        if (selectedCustomer.getAccounts().size() >= 2) {
+            try {
+                //  3. Ask which account to transfer from
+                System.out.println("From what account you want to transfer money?");
+                viewAccounts();
+                int accountFromChoice = scan.nextInt();
+                BankAccount accountFrom = selectedCustomer.getAccounts().get(accountFromChoice - 1);
 
-        System.out.printf("User selected: [%s]%n", selectedCustomer.getName());
-        viewAccounts();
-        System.out.println("");
+                //  4. Ask which account to transfer to
+                System.out.println("To what account you want to transfer money?");
+                viewAccounts();
+                int accountToChoice = scan.nextInt();
+                BankAccount accountTo = selectedCustomer.getAccounts().get(accountToChoice - 1);
+
+                //  5. Ask for the amount
+                System.out.println("What is the amount you want to transfer?");
+                double amount = scan.nextDouble();
+
+                //  6. Withdraw from source, deposit to destination
+                accountFrom.withdraw(amount);
+                accountTo.deposit(amount);
+
+                accountFrom.getTransactions().removeLast();
+                accountTo.getTransactions().removeLast();
+
+                //  7. Both accounts should get a TRANSFER transaction (not DEPOSIT/WITHDRAWAL)
+
+                Transaction t = new Transaction(TransactionType.TRANSFER, amount);
+                accountFrom.getTransactions().add(t);
+                accountTo.getTransactions().add(t);
+
+
+
+            } catch (InputMismatchException e) {
+                System.out.println("Give a valid input.");
+                scan.nextLine();
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Give a valid account!");
+                scan.nextLine();
+            }
+
+        } else {
+            System.out.println("U need 2 accounts in order to transfer between accounts.");
+            return;
+        }
+
+
+
+    }
+
+    public static void viewTransactions(){
+        if (!isUserSelected()) return;
+        if (!hasUserAccount()) return;
+
+        try{
+            System.out.println("Chose account to see transaction history:");
+            viewAccounts();
+            List <Transaction> transactions = selectedCustomer.getAccounts().get(scan.nextInt()-1).getTransactions();
+            if(!transactions.isEmpty()){
+                for (Transaction transaction : transactions){
+                    System.out.println(transaction.toString());
+                }
+            }else {
+                System.out.println("This account has no transactions.");
+            }
+
+
+        } catch (InputMismatchException e){
+            System.out.println("Give a valid input.");
+            scan.nextLine();
+        }catch (IndexOutOfBoundsException e) {
+            System.out.println("Give a valid account!");
+            scan.nextLine();
+        }
+
     }
 
     public static boolean isUserSelected() {
@@ -295,6 +364,25 @@ public class BankApp {
             return false;
         } else {
             return true;
+        }
+    }
+
+    public static void printStatement(){
+        if (!isUserSelected()) return;
+        if (!hasUserAccount()) return;
+
+        try{
+            System.out.println("Chose account to see create print statement:");
+            viewAccounts();
+            BankAccount account = selectedCustomer.getAccounts().get(scan.nextInt()-1);
+            account.printStatement();
+
+        } catch (InputMismatchException e){
+            System.out.println("Give a valid input.");
+            scan.nextLine();
+        }catch (IndexOutOfBoundsException e) {
+            System.out.println("Give a valid account!");
+            scan.nextLine();
         }
     }
 
