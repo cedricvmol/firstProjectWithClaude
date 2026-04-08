@@ -11,6 +11,7 @@ abstract class BankAccount implements Printable {
     public BankAccount(String accountNumber){
         this.accountNumber = accountNumber;
         transactions = new ArrayList<>();
+        setBalance(balance);
     }
 
     public void deposit(double amount){
@@ -31,6 +32,10 @@ abstract class BankAccount implements Printable {
 
     public double getBalance(){
         return balance;
+    }
+
+    public void setBalance(double amount){
+        this.balance = amount;
     }
 
     public String getAccountNumber(){

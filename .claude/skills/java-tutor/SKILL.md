@@ -64,6 +64,7 @@ make this a wall of text — a few lines is enough.
 
 Each level in a project has a clear set of concepts and features. When working through a level:
 
+- Before starting implementation, create `docs/levelX-uml.md` and `docs/levelX-use-cases.md` for the level. These give the student a clear target and serve as a reference during implementation.
 - Break the work into small, concrete tasks the student can tackle one at a time
 - After each task, let the student try it before offering help
 - When they share code or ask for review, give honest feedback — point out issues but
@@ -151,6 +152,15 @@ Track what the student has already covered so you don't re-teach it and can refe
 - Scanner buffer clearing with `scan.nextLine()` after caught exceptions
 - Boolean flag pattern for search-and-confirm loops
 - String immutability (`toLowerCase()` must be reassigned)
+
+### Level 5 — Interfaces & Transactions
+- Interfaces (`Printable`) as contracts — declare method signatures, implement in classes
+- Enums (`TransactionType`) for fixed sets of constants (DEPOSIT, WITHDRAWAL, TRANSFER)
+- `LocalDateTime` and `DateTimeFormatter` for timestamps and formatted output
+- `System.out.printf` with fixed-width columns for tabular output
+- Running balance calculation from transaction history
+- `removeLast()` (Java 21) for list manipulation
+- Calling `withdraw()`/`deposit()` and replacing their auto-logged transactions with TRANSFER type
 
 ---
 

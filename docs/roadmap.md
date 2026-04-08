@@ -23,7 +23,7 @@ Relearn Java by building a BankApp from simple to complex, level by level. Each 
 - **What:** Write tests for all domain classes (BankAccount, SavingAccount, CheckingAccount, Customer)
 - **Concepts:** JUnit 5, assertions, @Test annotation, test structure (Arrange-Act-Assert), Maven/Gradle for dependencies
 
-### Level 5 — Interfaces & Transactions
+### Level 5 — Interfaces & Transactions [DONE]
 - **What:** Transaction history, transferring between accounts, printable statements
 - **Concepts:** Interfaces, enums, date/time API, formatting output
 
