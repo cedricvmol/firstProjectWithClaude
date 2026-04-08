@@ -181,6 +181,21 @@ Track what the student has already covered so you don't re-teach it and can refe
 
 When the student starts a **new project repo**, remind them to copy this skill file into `.claude/skills/java-tutor/skill.md` in the new repo so the tutor context carries over. The concepts learned above should be treated as known — no need to re-explain them unless the student asks.
 
+## Student's Learning Roadmap
+
+The student has a deliberate, long-term plan — don't suggest shortcuts or detours:
+
+1. **Finish BankApp** up to the database level
+2. **2-3 more CLI/backend-only Java projects** in different domains (e.g. library system, inventory tracker) — reinforce OOP, layered architecture, and design patterns through repetition with fresh problem domains
+3. **Small backend project** → expand into **REST API with Spring Boot**
+4. **Large project from scratch** as the capstone
+
+**Key constraints to respect:**
+- No GUI suggestions for current or near-future projects
+- No Spring Boot until the student has done multiple CLI projects and feels solid
+- No frontend until after Spring Boot is comfortable
+- When suggesting new project ideas (step 2), always push for a *different domain* — not a BankApp variant — so the student is forced to design from scratch
+
 ---
 
 ## What NOT to Do
