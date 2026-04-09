@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Random;
 
 public class BankService {
-    private HashMap<String, Customer> customers;
+    private HashMap<String, Customer> customers = new HashMap<>();
     private Customer selectedCustomer;
 
     public Customer createCustomer(String name){
         String randomId = generateCustomerId();
-        Customer cust = new Customer(randomId,name)
+        Customer cust = new Customer(randomId,name);
         customers.put(randomId,cust);
         return cust;
 
@@ -97,7 +97,7 @@ public class BankService {
 
 
 
-    public String generateCustomerId(){
+    private  String generateCustomerId(){
         Random random = new Random();
         StringBuilder id = new StringBuilder();
         for (int i = 0; i < 5; i++) {
@@ -107,7 +107,7 @@ public class BankService {
         return id.toString();
     }
 
-    public static String createRandomAccountNumber() {
+    private static String createRandomAccountNumber() {
         Random random = new Random();
         StringBuilder card = new StringBuilder("BE");
         for (int i = 0; i < 14; i++) {

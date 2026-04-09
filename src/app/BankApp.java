@@ -1,14 +1,17 @@
 package app;
 
 import domain.*;
+import service.BankService;
 import storage.FileManager;
 import java.io.IOException;
+import java.lang.foreign.ValueLayout;
 import java.util.*;
 
 public class BankApp {
     private static final Scanner scan = new Scanner(System.in);
     private static HashMap<String,Customer> customers;
     private static Customer selectedCustomer;
+    private static BankService bankService ;
 
 
     public static void main(String[] args) throws IOException {
@@ -93,7 +96,7 @@ public class BankApp {
     }
 
     public static void openAccount() {
-        if (!isUserSelected()) return;
+        if(!bankService.isCustomerSelected()) return;
         viewAccounts();
         System.out.println();
         System.out.printf("What type of account do you want to open?%n" +
@@ -104,13 +107,11 @@ public class BankApp {
             int choiceOfAccount = scan.nextInt();
 
             if (choiceOfAccount == 1) {
-                SavingAccount savingAccount = new SavingAccount(createRandomAccountNumber());
-                selectedCustomer.addAccount(savingAccount);
+                BankAccount savingAccount = bankService.openSavingsAccount();
                 System.out.printf("You have successfully created the next account: %n%s.%n", savingAccount.toString());
             }
             if (choiceOfAccount == 2) {
-                CheckingAccount checkingAccount = new CheckingAccount(createRandomAccountNumber());
-                selectedCustomer.addAccount(checkingAccount);
+                BankAccount checkingAccount = bankService.openCheckingAccount();
                 System.out.printf("You have successfully created the next account: %n%s.%n", checkingAccount.toString());
             }
             if (choiceOfAccount == 3) {
@@ -124,19 +125,19 @@ public class BankApp {
     }
 
     public static void viewAccounts() {
-        if (!isUserSelected()) return;
-        if (!hasUserAccount()) return;
+        if (!bankService.isCustomerSelected()) return;
+        if (!bankService.hasAccounts()) return;
 
-        System.out.println(selectedCustomer.getName() + " has the following accounts: ");
-        List<BankAccount> accounts = selectedCustomer.getAccounts();
+        System.out.println(bankService.getSelectedCustomer().getName() + " has the following accounts: ");
+        List<BankAccount> accounts = bankService.getAccounts();
         for (int i = 0; i < accounts.size(); i++) {
             System.out.printf("%d.%s%n", i + 1, accounts.get(i).toString());
         }
     }
 
     public static void deposit() {
-        if (!isUserSelected()) return;
-        if (!hasUserAccount()) return;
+        if (!bankService.isCustomerSelected()) return;
+        if (!bankService.hasAccounts()) return;
         viewAccounts();
 
         try {
@@ -146,8 +147,8 @@ public class BankApp {
             System.out.println("What is the amount you want to deposit?");
             double amount = scan.nextDouble();
 
-            selectedCustomer.getAccounts().get(accountChoice - 1).deposit(amount);
-            System.out.printf("You have successfully deposited %.2f on %s%n", amount, selectedCustomer.getAccounts().get(accountChoice - 1).toString());
+            bankService.deposit(accountChoice-1,amount);
+            System.out.printf("You have successfully deposited %.2f on %s%n", amount, bankService.getAccount(accountChoice-1).toString());
 
         } catch (InputMismatchException e) {
             System.out.println("Please enter a valid number!");
