@@ -305,9 +305,10 @@ public class BankApp {
 
                 //  7. Both accounts should get a TRANSFER transaction (not DEPOSIT/WITHDRAWAL)
 
-                Transaction t = new Transaction(TransactionType.TRANSFER, amount);
-                accountFrom.getTransactions().add(t);
-                accountTo.getTransactions().add(t);
+                Transaction tFrom = new Transaction(TransactionType.TRANSFER_OUT, amount,accountFrom.getBalance());
+                Transaction tTo = new Transaction(TransactionType.TRANSFER_IN , amount , accountTo.getBalance());
+                accountFrom.getTransactions().add(tFrom);
+                accountTo.getTransactions().add(tTo);
 
 
 

@@ -23,7 +23,7 @@ public class FileManager {
                 writer.write("ACCOUNT;" + key + ";" + account.getAccountNumber() + ";" + account.getType() + ";" + account.getBalance());
                 writer.newLine();
                 for (Transaction transaction : account.getTransactions()) {
-                    writer.write("TRANSACTION;" + account.getAccountNumber() + ";" + transaction.getType() + ";" + transaction.getAmount() + ";" + transaction.getDateTime().format(formatter));
+                    writer.write("TRANSACTION;" + account.getAccountNumber() + ";" + transaction.getType() + ";" + transaction.getAmount() + ";"+ transaction.getBalanceAfterTransaction() +";" + transaction.getDateTime().format(formatter));
                     writer.newLine();
                 }
             }
@@ -58,7 +58,7 @@ public class FileManager {
                     for(Customer customer : customerMap.values()){
                         for(BankAccount account : customer.getAccounts()){
                             if(account.getAccountNumber().equals(inputs[1])){
-                                Transaction t = new Transaction(TransactionType.valueOf(inputs[2]),Double.parseDouble(inputs[3]), LocalDateTime.parse(inputs[4],formatter));
+                                Transaction t = new Transaction(TransactionType.valueOf(inputs[2]),Double.parseDouble(inputs[3]), Double.parseDouble(inputs[4]),LocalDateTime.parse(inputs[5],formatter));
                                 account.addTransaction(t);
                             }
                         }

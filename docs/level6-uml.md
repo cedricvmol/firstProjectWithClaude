@@ -43,7 +43,7 @@ Plain text, one line per record. Use a delimiter (e.g. `;`) to separate fields.
 ```
 CUSTOMER;customerId;name
 ACCOUNT;customerId;accountNumber;type;balance
-TRANSACTION;accountNumber;type;amount;dateTime
+TRANSACTION;accountNumber;type;amount;balanceAfterTransaction;dateTime
 ```
 
 ## Key Concepts

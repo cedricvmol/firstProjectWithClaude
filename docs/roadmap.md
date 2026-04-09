@@ -31,15 +31,14 @@ Relearn Java by building a app.BankApp from simple to complex, level by level. E
 - **What:** Save and load customers/accounts to file so data persists between runs
 - **Concepts:** File I/O, serialization, reading/writing text or JSON
 
-### Level 7 — Refactor & Polish
+### Level 7 — Refactor & Polish [DONE]
 - **What:** Clean up code, organize into packages, fix known issues
 - **Concepts:** Packages, access modifiers, separation of concerns
 - **Done:**
   - Organized classes into `domain`, `app`, `storage` packages
   - Added `addTransaction()` on `BankAccount` for proper encapsulation
-- **Still to do:**
-  - Extract running balance calculation out of `printStatement()`
-  - TRANSFER transactions don't distinguish between source (money out) and destination (money in)
+  - Stored `balanceAfterTransaction` on `Transaction` instead of recalculating in `printStatement()`
+  - Split `TRANSFER` into `TRANSFER_IN` / `TRANSFER_OUT` to distinguish source vs destination
 
 ### Level 8 — Domain Controller / Service Layer
 - **What:** Extract business logic out of app.BankApp into a dedicated BankService (DomainController) class

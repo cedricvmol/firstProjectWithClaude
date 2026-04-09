@@ -22,8 +22,4 @@ public class CheckingAccount extends BankAccount implements Printable{
         return "Checkings";
     }
 
-    @Override
-    public void printStatement(){
-        System.out.printf("TEST STILL NEED TO IMPLEMENT");
-    }
 }

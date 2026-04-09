@@ -24,7 +24,7 @@ public abstract class BankAccount implements Printable {
 
         if(amount > 0){
             balance += amount;
-            addTransaction(new Transaction(TransactionType.DEPOSIT,amount));
+            addTransaction(new Transaction(TransactionType.DEPOSIT,amount,getBalance()));
         }else{
             System.out.println("The deposit amount needs to be positive.");
         }
@@ -32,7 +32,7 @@ public abstract class BankAccount implements Printable {
 
     public boolean withdraw(double amount){
         balance -= amount;
-        addTransaction(new Transaction(TransactionType.WITHDRAWAL,amount));
+        addTransaction(new Transaction(TransactionType.WITHDRAWAL,amount,getBalance()));
         return true;
     }
 
@@ -55,6 +55,7 @@ public abstract class BankAccount implements Printable {
 
     public abstract String getType();
 
+
     @Override
     public String toString(){
         return getType() + " - " + getAccountNumber();
@@ -64,18 +65,12 @@ public abstract class BankAccount implements Printable {
     public void printStatement(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         System.out.printf("%-20s %-16s %10s %10s %n", "Date", "Type", "Amount", "Balance");
-        double runningBalance = 0;
         for(Transaction transaction : transactions){
-            if(transaction.getType() == TransactionType.DEPOSIT){
-                runningBalance += transaction.getAmount();
-            } else {
-                runningBalance -= transaction.getAmount();
-            }
             System.out.printf("%-20s %-16s %10.2f %10.2f %n",
                     transaction.getDateTime().format(formatter),
                     transaction.getType(),
                     transaction.getAmount(),
-                    runningBalance);
+                    transaction.getBalanceAfterTransaction());
         }
     }
 }
