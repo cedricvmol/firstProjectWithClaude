@@ -10,45 +10,47 @@ public abstract class BankAccount implements Printable {
     private String accountNumber;
     private List<Transaction> transactions;
 
-    public BankAccount(String accountNumber){
+    public BankAccount(String accountNumber) {
         this.accountNumber = accountNumber;
         transactions = new ArrayList<>();
         setBalance(balance);
     }
 
-    public void addTransaction(Transaction t){
+    public void addTransaction(Transaction t) {
         this.transactions.add(t);
     }
 
-    public void deposit(double amount){
-
-        if(amount > 0){
+    public void deposit(double amount) {
+        if (amount > 0) {
             balance += amount;
-            addTransaction(new Transaction(TransactionType.DEPOSIT,amount,getBalance()));
-        }else{
-            System.out.println("The deposit amount needs to be positive.");
+            addTransaction(new Transaction(TransactionType.DEPOSIT, amount, getBalance()));
+        } else {
+            throw new IllegalArgumentException("The amount needs to be positive");
         }
     }
 
-    public boolean withdraw(double amount){
-        balance -= amount;
-        addTransaction(new Transaction(TransactionType.WITHDRAWAL,amount,getBalance()));
-        return true;
+    public void withdraw(double amount) {
+        if (amount > 0) {
+            balance -= amount;
+            addTransaction(new Transaction(TransactionType.WITHDRAWAL, amount, getBalance()));
+        } else {
+            throw new IllegalArgumentException("The amount needs to be positive");
+        }
     }
 
-    public double getBalance(){
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(double amount){
+    public void setBalance(double amount) {
         this.balance = amount;
     }
 
-    public String getAccountNumber(){
+    public String getAccountNumber() {
         return accountNumber;
     }
 
-    public List<Transaction> getTransactions(){
+    public List<Transaction> getTransactions() {
         return transactions;
     }
 
@@ -57,21 +59,23 @@ public abstract class BankAccount implements Printable {
 
 
     @Override
-    public String toString(){
+    public String toString() {
         return getType() + " - " + getAccountNumber();
     }
 
     @Override
-    public void printStatement(){
+    public String printStatement() {
+        String output = "";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        System.out.printf("%-20s %-16s %10s %10s %n", "Date", "Type", "Amount", "Balance");
-        for(Transaction transaction : transactions){
-            System.out.printf("%-20s %-16s %10.2f %10.2f %n",
+        output += String.format("%-20s %-16s %10s %10s %n", "Date", "Type", "Amount", "Balance");
+        for (Transaction transaction : transactions) {
+            output += String.format("%-20s %-16s %10.2f %10.2f %n",
                     transaction.getDateTime().format(formatter),
                     transaction.getType(),
                     transaction.getAmount(),
                     transaction.getBalanceAfterTransaction());
         }
+        return output;
     }
 }
 

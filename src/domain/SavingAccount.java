@@ -1,25 +1,20 @@
 package domain;
 
-public class SavingAccount extends BankAccount{
+public class SavingAccount extends BankAccount {
 
-    public SavingAccount(String accountNumber){
+    public SavingAccount(String accountNumber) {
         super(accountNumber);
     }
 
-    public boolean withdraw(double amount){
-        if(getBalance()<amount){
-            System.out.println("U have insufficient balance for that withdrawel.");
-            return false;
-        }else {
-            super.withdraw(amount);
-            return true;
+    public void withdraw(double amount) {
+        if (getBalance() < amount) {
+            throw new IllegalArgumentException("U have insufficient balance for that withdrawel.");
         }
+        super.withdraw(amount);
     }
 
-    public String getType(){
+    public String getType() {
         return "Savings";
     }
-
-
 
 }

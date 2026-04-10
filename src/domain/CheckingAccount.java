@@ -1,6 +1,6 @@
 package domain;
 
-public class CheckingAccount extends BankAccount implements Printable{
+public class CheckingAccount extends BankAccount{
 
     private static final double OVERDRAFT_LIMIT = -500.00;
 
@@ -8,13 +8,11 @@ public class CheckingAccount extends BankAccount implements Printable{
         super(accountNumber);
     }
 
-    public boolean withdraw(double amount){
+    public void  withdraw(double amount){
         if(getBalance() - amount >= OVERDRAFT_LIMIT){
             super.withdraw(amount);
-            return true;
         }else {
-            System.out.println("Overdraft limit reached!");
-            return false;
+            throw new IllegalArgumentException("Overdraft limit reached!");
         }
     }
 

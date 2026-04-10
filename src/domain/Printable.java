@@ -1,5 +1,5 @@
 package domain;
 
 public interface Printable {
-    public void printStatement();
+    public String printStatement();
 }

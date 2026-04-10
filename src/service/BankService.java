@@ -1,7 +1,8 @@
 package service;
 
 import domain.*;
-
+import storage.FileManager;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -12,7 +13,7 @@ public class BankService {
 
     public Customer createCustomer(String name){
         String randomId = generateCustomerId();
-        Customer cust = new Customer(randomId,name);
+        Customer cust = new Customer(name,randomId);
         customers.put(randomId,cust);
         return cust;
 
@@ -25,6 +26,7 @@ public class BankService {
                 return customers.get(id);
             }
         }
+        selectedCustomer = null;
         return null;
     }
 
@@ -45,13 +47,13 @@ public class BankService {
     }
 
     public BankAccount openSavingsAccount(){
-        SavingAccount acc = new SavingAccount(createRandomAccountNumber());
+        SavingAccount acc = new SavingAccount(generateAccountNumber());
         selectedCustomer.addAccount(acc);
         return acc;
     }
 
     public BankAccount openCheckingAccount(){
-        CheckingAccount acc = new CheckingAccount(createRandomAccountNumber());
+        CheckingAccount acc = new CheckingAccount(generateAccountNumber());
         selectedCustomer.addAccount(acc);
         return acc;
     }
@@ -64,8 +66,8 @@ public class BankService {
         selectedCustomer.getAccounts().get(accountIndex).deposit(amount);
     }
 
-    public boolean withdraw(int accountIndex,double amount){
-        return selectedCustomer.getAccounts().get(accountIndex).withdraw(amount);
+    public void withdraw(int accountIndex,double amount){
+        selectedCustomer.getAccounts().get(accountIndex).withdraw(amount);
     }
 
     public void transfer(int fromIndex, int toIndex, double amount){
@@ -90,6 +92,17 @@ public class BankService {
         return selectedCustomer.getAccounts().get(index);
     }
 
+    public String printStatement(int accountIndex){
+        return selectedCustomer.getAccounts().get(accountIndex).printStatement();
+    }
+
+    public void loadData() throws IOException {
+        customers = FileManager.loadData();
+    }
+
+    public void saveData() throws IOException {
+        FileManager.saveData(customers);
+    }
 
 
 
@@ -107,7 +120,7 @@ public class BankService {
         return id.toString();
     }
 
-    private static String createRandomAccountNumber() {
+    private static String generateAccountNumber() {
         Random random = new Random();
         StringBuilder card = new StringBuilder("BE");
         for (int i = 0; i < 14; i++) {

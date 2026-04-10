@@ -11,7 +11,7 @@ public class Transaction {
     private double balanceAfterTransaction;
 
 
-    public Transaction(TransactionType type,double amount,double balanceAfterTransaction){
+    public Transaction(TransactionType type, double amount, double balanceAfterTransaction) {
         this.amount = amount;
         this.type = type;
         this.localDateTime = LocalDateTime.now();
@@ -25,24 +25,24 @@ public class Transaction {
         this.balanceAfterTransaction = balanceAfterTransaction;
     }
 
-    public double getBalanceAfterTransaction(){
+    public double getBalanceAfterTransaction() {
         return balanceAfterTransaction;
     }
 
-    public TransactionType getType(){
+    public TransactionType getType() {
         return type;
     }
 
-    public double getAmount(){
+    public double getAmount() {
         return amount;
     }
 
-    public LocalDateTime getDateTime(){
+    public LocalDateTime getDateTime() {
         return localDateTime;
     }
 
-    public String toString(){
+    public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return  getType() + " - " + getAmount() + " - " + localDateTime.format(formatter);
+        return getType() + " - " + getAmount() + " - " + localDateTime.format(formatter);
     }
 }

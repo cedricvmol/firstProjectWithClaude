@@ -10,35 +10,30 @@ public class Customer {
     private final List<BankAccount> accounts;
 
 
-    public Customer(String name, String id){
+    public Customer(String name, String id) {
         this.name = name;
         this.customerId = id;
         this.accounts = new ArrayList<>();
     }
 
-    public void addAccount(BankAccount account){
-
-        if(account != null) {
-            accounts.add(account);
-        }else {
-            System.out.println("Give a valid bank account!");
-        }
+    public void addAccount(BankAccount account) {
+        accounts.add(account);
     }
 
-    public List<BankAccount> getAccounts(){
+    public List<BankAccount> getAccounts() {
         return accounts;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public String getCustomerId(){
+    public String getCustomerId() {
         return customerId;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return getName();
     }
 }

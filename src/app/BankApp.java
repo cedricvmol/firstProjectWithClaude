@@ -2,20 +2,16 @@ package app;
 
 import domain.*;
 import service.BankService;
-import storage.FileManager;
+
 import java.io.IOException;
-import java.lang.foreign.ValueLayout;
 import java.util.*;
 
 public class BankApp {
     private static final Scanner scan = new Scanner(System.in);
-    private static HashMap<String,Customer> customers;
-    private static Customer selectedCustomer;
-    private static BankService bankService ;
-
+    private static BankService bankService = new BankService();
 
     public static void main(String[] args) throws IOException {
-        customers = FileManager.loadData();
+        bankService.loadData();
         System.out.println("Welcome in my bank app!");
         mainMenu();
 
@@ -80,7 +76,7 @@ public class BankApp {
                         printStatement();
                         break;
                     case 12:
-                        FileManager.saveData(customers);
+                        bankService.saveData();
                         flag = false;
                         break;
                 }
@@ -96,8 +92,7 @@ public class BankApp {
     }
 
     public static void openAccount() {
-        if(!bankService.isCustomerSelected()) return;
-        viewAccounts();
+        if (!bankService.isCustomerSelected()) return;
         System.out.println();
         System.out.printf("What type of account do you want to open?%n" +
                 "1.Saving%n" +
@@ -147,21 +142,23 @@ public class BankApp {
             System.out.println("What is the amount you want to deposit?");
             double amount = scan.nextDouble();
 
-            bankService.deposit(accountChoice-1,amount);
-            System.out.printf("You have successfully deposited %.2f on %s%n", amount, bankService.getAccount(accountChoice-1).toString());
+            bankService.deposit(accountChoice - 1, amount);
+            System.out.printf("You have successfully deposited %.2f on %s%n", amount, bankService.getAccount(accountChoice - 1).toString());
 
         } catch (InputMismatchException e) {
             System.out.println("Please enter a valid number!");
             scan.nextLine();
         } catch (IndexOutOfBoundsException e) {
             System.out.println("That account doesn't exist.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
 
     }
 
     public static void withdraw() {
-        if (!isUserSelected()) return;
-        if (!hasUserAccount()) return;
+        if (!bankService.isCustomerSelected()) return;
+        if (!bankService.hasAccounts()) return;
         viewAccounts();
 
         try {
@@ -172,31 +169,31 @@ public class BankApp {
             System.out.println("What is the amount you want to withdraw?");
             double amount = scan.nextDouble();
 
-            if (selectedCustomer.getAccounts().get(accountChoiceToWithdraw - 1).withdraw(amount)) {
-                System.out.printf("You have successfully withdrawn %.2f on %s%n", amount, selectedCustomer.getAccounts().get(accountChoiceToWithdraw - 1).toString());
-            } else {
-                System.out.println("Insufficient funds.");
-            }
+            bankService.withdraw(accountChoiceToWithdraw - 1, amount);
+            System.out.printf("You have successfully withdrawn %.2f on %s%n", amount, bankService.getAccount(accountChoiceToWithdraw - 1).toString());
+
 
         } catch (InputMismatchException e) {
             System.out.println("Please enter a valid number!");
             scan.nextLine();
         } catch (IndexOutOfBoundsException e) {
             System.out.println("That account doesn't exist.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
 
 
     }
 
     public static void viewBalance() {
-        if (!isUserSelected()) return;
-        if (!hasUserAccount()) return;
+        if (!bankService.isCustomerSelected()) return;
+        if (!bankService.hasAccounts()) return;
 
         System.out.println("For what account do you want see the balance?");
         viewAccounts();
         try {
             int account = scan.nextInt();
-            System.out.printf("The balance for %s , is €%.2f%n", selectedCustomer.getAccounts().get(account - 1), selectedCustomer.getAccounts().get(account - 1).getBalance());
+            System.out.printf("The balance for %s , is €%.2f%n", bankService.getAccount(account - 1), bankService.getAccount(account - 1).getBalance());
         } catch (InputMismatchException e) {
             System.out.println("Give a valid input!");
             scan.nextLine();
@@ -208,37 +205,23 @@ public class BankApp {
     }
 
     public static void createCustomer() {
-        String customerID = createRandomId();
 
         System.out.println("New customer name: ");
         String customerName = scan.nextLine();
 
-        Customer customer = new Customer(customerName, customerID);
-        System.out.printf("%nNew customer %s with ID:%s added to the system!%n%n", customer.getName(), customer.getCustomerId());
-        customers.put(customerID, customer);
-
-        if (customers.size() == 1) {
-            selectedCustomer = customer;
-        }
+        bankService.createCustomer(customerName);
+        System.out.printf("%nNew customer %s added to the system!%n%n", customerName);
     }
 
     public static void selectCustomer() {
         viewAllCustomers();
-
-        System.out.println("Type a customer name.");
+        System.out.println("Which customer you would like to select?: ");
         String customerToSelect = scan.nextLine();
-        customerToSelect = customerToSelect.toLowerCase();
-        boolean customerFound = false;
 
-        for (String key : customers.keySet()) {
-            if (customers.get(key).getName().toLowerCase().equals(customerToSelect)) {
-                selectedCustomer = customers.get(key);
-                customerFound = true;
-            }
+        bankService.selectCustomer(customerToSelect);
 
-        }
-        if (customerFound) {
-            System.out.println("U have selected " + selectedCustomer.getName() + ".");
+        if (bankService.getSelectedCustomer() != null) {
+            System.out.println("U have selected " + bankService.getSelectedCustomer().getName() + ".");
         } else {
             System.out.println("Please type a valid customer!");
         }
@@ -249,68 +232,35 @@ public class BankApp {
     public static void viewAllCustomers() {
 
         System.out.println("Customers in our system:");
-        for (String key : customers.keySet()) {
-            System.out.println("ID:" + key + "  --------  Name: " + customers.get(key).toString());
+        for (String key : bankService.getAllCustomers().keySet()) {
+            System.out.println("ID:" + key + "  --------  Name: " + bankService.getAllCustomers().get(key));
         }
     }
 
-    public static String createRandomId() {
-        Random random = new Random();
-        StringBuilder id = new StringBuilder();
-        for (int i = 0; i < 5; i++) {
-            int n = random.nextInt(10);
-            id.append(n);
-        }
-        return id.toString();
-    }
-
-    public static String createRandomAccountNumber() {
-        Random random = new Random();
-        StringBuilder card = new StringBuilder("BE");
-        for (int i = 0; i < 14; i++) {
-            int n = random.nextInt(10);
-            card.append(n);
-        }
-        return card.toString();
-    }
 
     public static void transfer() {
         //  1. Check isUserSelected() and hasUserAccount()
-        if (!isUserSelected()) return;
-        if (!hasUserAccount()) return;
+        if (!bankService.isCustomerSelected()) return;
+        if (!bankService.hasAccounts()) return;
         //  2. The customer needs at least 2 accounts to transfer between — add a check for that
-        if (selectedCustomer.getAccounts().size() >= 2) {
+        if (bankService.getAccounts().size() >= 2) {
             try {
                 //  3. Ask which account to transfer from
                 System.out.println("From what account you want to transfer money?");
                 viewAccounts();
                 int accountFromChoice = scan.nextInt();
-                BankAccount accountFrom = selectedCustomer.getAccounts().get(accountFromChoice - 1);
 
                 //  4. Ask which account to transfer to
                 System.out.println("To what account you want to transfer money?");
                 viewAccounts();
                 int accountToChoice = scan.nextInt();
-                BankAccount accountTo = selectedCustomer.getAccounts().get(accountToChoice - 1);
 
                 //  5. Ask for the amount
                 System.out.println("What is the amount you want to transfer?");
                 double amount = scan.nextDouble();
 
-                //  6. Withdraw from source, deposit to destination
-                accountFrom.withdraw(amount);
-                accountTo.deposit(amount);
 
-                accountFrom.getTransactions().removeLast();
-                accountTo.getTransactions().removeLast();
-
-                //  7. Both accounts should get a TRANSFER transaction (not DEPOSIT/WITHDRAWAL)
-
-                Transaction tFrom = new Transaction(TransactionType.TRANSFER_OUT, amount,accountFrom.getBalance());
-                Transaction tTo = new Transaction(TransactionType.TRANSFER_IN , amount , accountTo.getBalance());
-                accountFrom.getTransactions().add(tFrom);
-                accountTo.getTransactions().add(tTo);
-
+                bankService.transfer(accountFromChoice - 1, accountToChoice - 1, amount);
 
 
             } catch (InputMismatchException e) {
@@ -319,6 +269,8 @@ public class BankApp {
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("Give a valid account!");
                 scan.nextLine();
+            } catch (IllegalArgumentException e){
+                System.out.println(e.getMessage());
             }
 
         } else {
@@ -327,69 +279,48 @@ public class BankApp {
         }
 
 
-
     }
 
-    public static void viewTransactions(){
-        if (!isUserSelected()) return;
-        if (!hasUserAccount()) return;
+    public static void viewTransactions() {
+        if (!bankService.isCustomerSelected()) return;
+        if (!bankService.hasAccounts()) return;
 
-        try{
+        try {
             System.out.println("Chose account to see transaction history:");
             viewAccounts();
-            List <Transaction> transactions = selectedCustomer.getAccounts().get(scan.nextInt()-1).getTransactions();
-            if(!transactions.isEmpty()){
-                for (Transaction transaction : transactions){
+            List<Transaction> transactions = bankService.getTransactions(scan.nextInt() - 1);
+            if (!transactions.isEmpty()) {
+                for (Transaction transaction : transactions) {
                     System.out.println(transaction.toString());
                 }
-            }else {
+            } else {
                 System.out.println("This account has no transactions.");
             }
 
 
-        } catch (InputMismatchException e){
+        } catch (InputMismatchException e) {
             System.out.println("Give a valid input.");
             scan.nextLine();
-        }catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Give a valid account!");
             scan.nextLine();
         }
 
     }
 
-    public static boolean isUserSelected() {
-        if (selectedCustomer == null) {
-            System.out.println("You need to create and select a customer first.");
-            return false;
-        } else {
-            return true;
-        }
 
-    }
+    public static void printStatement() {
+        if (!bankService.isCustomerSelected()) return;
+        if (!bankService.hasAccounts()) return;
 
-    public static boolean hasUserAccount() {
-        if (selectedCustomer.getAccounts().isEmpty()) {
-            System.out.println("There are no accounts for the following user " + selectedCustomer.getName());
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public static void printStatement(){
-        if (!isUserSelected()) return;
-        if (!hasUserAccount()) return;
-
-        try{
+        try {
             System.out.println("Chose account to see create print statement:");
             viewAccounts();
-            BankAccount account = selectedCustomer.getAccounts().get(scan.nextInt()-1);
-            account.printStatement();
-
-        } catch (InputMismatchException e){
+            System.out.println(bankService.printStatement(scan.nextInt()-1));
+        } catch (InputMismatchException e) {
             System.out.println("Give a valid input.");
             scan.nextLine();
-        }catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Give a valid account!");
             scan.nextLine();
         }
