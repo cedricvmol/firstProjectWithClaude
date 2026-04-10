@@ -175,6 +175,16 @@ Track what the student has already covered so you don't re-teach it and can refe
 - Making all file utility methods `static` so they can be called without instantiating the class
 - Guard logic on menu options: `viewAllCustomers()` and `selectCustomer()` should not require a selected customer
 
+### Level 8 — Service Layer / Domain Controller
+- Service layer pattern: `BankService` as middleman between UI (`BankApp`) and domain classes
+- UI layer only handles input (Scanner) and output (System.out) — never business logic
+- Service layer owns state (`customers`, `selectedCustomer`) and exposes methods that return values
+- Domain classes must not print to console — no `System.out` in domain or service
+- `IllegalArgumentException` for domain validation errors — throw in domain, catch in UI
+- `String.format()` as the non-printing equivalent of `System.out.printf`
+- Refactoring `boolean` return types to `void` + exception when using exception-based error handling
+- Wrapping storage calls (`loadData`/`saveData`) through the service layer so UI doesn't touch storage directly
+
 ---
 
 ## Continuity Across Projects

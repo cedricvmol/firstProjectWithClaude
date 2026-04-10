@@ -40,9 +40,18 @@ Relearn Java by building a app.BankApp from simple to complex, level by level. E
   - Stored `balanceAfterTransaction` on `Transaction` instead of recalculating in `printStatement()`
   - Split `TRANSFER` into `TRANSFER_IN` / `TRANSFER_OUT` to distinguish source vs destination
 
-### Level 8 — Domain Controller / Service Layer
+### Level 8 — Domain Controller / Service Layer [DONE]
 - **What:** Extract business logic out of app.BankApp into a dedicated BankService (DomainController) class
 - **Concepts:** Separation of concerns, service layer pattern, UI layer vs domain layer, dependency injection basics
+- **Done:**
+  - Created `BankService` as the middleman between `BankApp` (UI) and domain classes
+  - `BankApp` only handles Scanner input, menu display, and printing output
+  - `BankService` owns `customers` and `selectedCustomer`, exposes methods that return values
+  - Domain classes no longer print to console — throw `IllegalArgumentException` for errors instead
+  - `BankApp` catches exceptions and displays messages
+  - `printStatement()` refactored to return `String` instead of printing directly
+  - `withdraw()` changed from `boolean` return to `void` + exception on failure
+  - `loadData()`/`saveData()` wrapped through `BankService` — `BankApp` no longer touches `FileManager`
 
 ### Level 9 — Database Storage
 - **What:** Replace file storage with a database, store and retrieve customers, accounts, and transactions
