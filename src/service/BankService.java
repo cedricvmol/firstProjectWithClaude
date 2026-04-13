@@ -1,8 +1,10 @@
 package service;
 
 import domain.*;
+import storage.DatabaseManager;
 import storage.FileManager;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -10,6 +12,7 @@ import java.util.Random;
 public class BankService {
     private HashMap<String, Customer> customers = new HashMap<>();
     private Customer selectedCustomer;
+    private DatabaseManager databaseManager = new DatabaseManager();
 
     public Customer createCustomer(String name){
         String randomId = generateCustomerId();
@@ -96,12 +99,16 @@ public class BankService {
         return selectedCustomer.getAccounts().get(accountIndex).printStatement();
     }
 
-    public void loadData() throws IOException {
-        customers = FileManager.loadData();
+    public void createTables() throws SQLException {
+        databaseManager.createTables();
     }
 
-    public void saveData() throws IOException {
-        FileManager.saveData(customers);
+    public void loadData() throws SQLException {
+        customers = databaseManager.loadData();
+    }
+
+    public void saveData() throws SQLException {
+        databaseManager.saveData(customers);
     }
 
 

@@ -4,13 +4,15 @@ import domain.*;
 import service.BankService;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 public class BankApp {
     private static final Scanner scan = new Scanner(System.in);
     private static BankService bankService = new BankService();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws SQLException {
+        bankService.createTables();
         bankService.loadData();
         System.out.println("Welcome in my bank app!");
         mainMenu();
@@ -84,7 +86,7 @@ public class BankApp {
             } catch (InputMismatchException e) {
                 System.out.println("Please select a valid menu option!");
                 scan.nextLine();
-            } catch (IOException e) {
+            } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
 
