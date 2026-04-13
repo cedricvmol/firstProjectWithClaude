@@ -186,6 +186,26 @@ Track what the student has already covered so you don't re-teach it and can refe
 - Refactoring `boolean` return types to `void` + exception when using exception-based error handling
 - Wrapping storage calls (`loadData`/`saveData`) through the service layer so UI doesn't touch storage directly
 
+### Level 9 — Database Storage with SQLite & JDBC
+- SQLite as an embedded database — no separate server, just a `.db` file in the project
+- Adding a JDBC driver dependency via Maven (`xerial/sqlite-jdbc`)
+- `DriverManager.getConnection(url)` to open a database connection
+- `Connection`, `Statement`, `PreparedStatement`, `ResultSet` — the core JDBC types
+- `CREATE TABLE IF NOT EXISTS` — idempotent table creation on startup
+- `PreparedStatement` with `?` placeholders for parameterized queries — cleaner and safe
+- `executeUpdate()` for INSERT/UPDATE/DELETE vs `executeQuery()` for SELECT
+- `ResultSet` as a cursor — starts before first row, `rs.next()` advances and returns false when exhausted
+- Reading columns by name: `rs.getString("column")`, `rs.getDouble("column")`
+- Try-with-resources for `Connection`, `PreparedStatement`, and `ResultSet` — automatic cleanup
+- Relational schema design: three tables (customers, bank_accounts, transactions) with foreign keys
+- `DELETE` before re-inserting on save — simple full-overwrite strategy
+- Loading order matters: customers → accounts → transactions (each depends on the previous)
+- Helper `HashMap<String, BankAccount>` built during the accounts load to enable O(1) lookup when attaching transactions
+- `TransactionType.valueOf(string)` to deserialize enum values stored as TEXT
+- `LocalDateTime.parse(string, formatter)` to deserialize timestamps stored as TEXT
+- Replacing `FileManager` with `DatabaseManager` in the service layer — same interface, different storage backend
+- Calling `createTables()` before `loadData()` so the DB is always ready on first run
+
 ---
 
 ## Continuity Across Projects
